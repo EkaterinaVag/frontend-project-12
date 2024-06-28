@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
+import ChatPage from "./ChatPage";
 import { AuthProvider } from "../contexts/AuthContext.";
 import { Navbar, Container } from "react-bootstrap";
 
@@ -17,7 +18,7 @@ const App = () => {
             </Container>
           </Navbar>
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<ChatPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
