@@ -10,21 +10,14 @@ const apiPath = "/api/v1";
 const url = () => [apiPath, "login"].join("/");
 
 const LoginPage = () => {
-  const authContext = useContext(AuthContext);
   const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
+  const inputRef = useRef();
 
   useEffect(() => {
     inputRef.current.focus();
-
-    const userId = JSON.parse(localStorage.getItem("userId"));
-    if (userId.token) {
-      authContext.logIn();
-    } else {
-      navigate("/login");
-    }
-  }, [authContext, navigate]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +28,7 @@ const LoginPage = () => {
       setAuthFailed(false);
       try {
         const res = await axios.post(url(), values);
-        localStorage.setItem("userId", JSON.stringify(res.data)); // userId.token = token
+        localStorage.setItem("token", JSON.stringify(res.data.token));
         authContext.logIn();
         navigate("/");
       } catch {
@@ -43,6 +36,7 @@ const LoginPage = () => {
       }
     },
   });
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
