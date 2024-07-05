@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext.";
+import { AuthContext } from "../contexts/AuthContext";
 import image from "../assets/image.jpg";
 
 const apiPath = "/api/v1";
@@ -11,7 +11,7 @@ const url = () => [apiPath, "login"].join("/");
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
-  const authContext = useContext(AuthContext);
+  const { logIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const inputRef = useRef();
 
@@ -29,7 +29,8 @@ const LoginPage = () => {
       try {
         const res = await axios.post(url(), values);
         localStorage.setItem("token", JSON.stringify(res.data.token));
-        authContext.logIn();
+        localStorage.setItem("username", JSON.stringify(res.data.username));
+        logIn();
         navigate("/");
       } catch {
         setAuthFailed(true);
@@ -55,7 +56,7 @@ const LoginPage = () => {
                   <Form.Group className="form-floating mb-3">
                     <Form.Control
                       name="username"
-                      autocomplete="username"
+                      autoComplete="username"
                       required
                       placeholder="Ваш ник"
                       id="username"
@@ -69,7 +70,7 @@ const LoginPage = () => {
                   <Form.Group className="form-floating mb-4">
                     <Form.Control
                       name="password"
-                      autocomplete="current-password"
+                      autoComplete="current-password"
                       required
                       placeholder="Пароль"
                       type="password"
