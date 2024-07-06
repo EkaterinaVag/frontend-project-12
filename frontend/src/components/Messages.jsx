@@ -1,15 +1,14 @@
-import { useGetMessagesQuery, useAddMessageMutation } from "../messagesApi";
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useGetMessagesQuery, useSendMessageMutation } from "../api/chatApi";
+import { useEffect } from "react";
+import { setupSocket } from "../api/chatApi";
 
 const Messages = ({ channel }) => {
-  const {
-    data: messages,
-    isLoading: messagesLoading,
-  } = useGetMessagesQuery();
+  const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery();
 
-  const [addMessage, { isLoading: addMessageLoading, error: addMessageError }] =
-    useAddMessageMutation();
+  const [
+    addMessage,
+    { isLoading: sendMessageLoading, error: sendMessageError },
+  ] = useSendMessageMutation();
 
   const username = JSON.parse(localStorage.getItem("username"));
 
@@ -17,16 +16,10 @@ const Messages = ({ channel }) => {
     (message) => message.channelId === channel.id
   );
 
-  const [socketMessages, setSocketMessages] = useState([]);
-
   useEffect(() => {
-    const socket = io('http://localhost:3000');
+    const cleanup = setupSocket();
 
-    const handelNewMessage = (payload) => setSocketMessages((prevMessages) => [...prevMessages, payload]);
-
-    socket.on('newMessage', handelNewMessage);
-
-    return () => socket.off('newMessage', handelNewMessage);
+    return cleanup;
   }, []);
 
   const handleSubmit = async (event) => {
@@ -41,7 +34,7 @@ const Messages = ({ channel }) => {
       await addMessage(newMessage);
       event.target.body.value = "";
     } catch (error) {
-      console.error("Error adding message:", addMessageError);
+      console.error("Error adding message:", sendMessageError);
     }
   };
 
@@ -56,11 +49,12 @@ const Messages = ({ channel }) => {
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messagesLoading && <p>Загрузка сообщений...</p>}
-          {(channelMessages || []).concat(socketMessages).map((message) => (
-            <div key={message.id}>
-              <strong>{message.username}</strong>: {message.body}
-            </div>
-          ))}
+          {channelMessages &&
+            channelMessages.map((message) => (
+              <div key={message.id}>
+                <strong>{message.username}</strong>: {message.body}
+              </div>
+            ))}
         </div>
 
         <div className="mt-auto px-5 py-3">
@@ -78,7 +72,7 @@ const Messages = ({ channel }) => {
               />
               <button
                 type="submit"
-                disabled={addMessageLoading}
+                disabled={sendMessageLoading}
                 className="btn btn-group-vertical"
               >
                 <span className="visually-hidden">Отправить</span>
