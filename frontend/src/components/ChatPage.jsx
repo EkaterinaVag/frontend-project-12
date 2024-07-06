@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useGetChannelsQuery } from "../channelsApi";
+import { useGetChannelsQuery } from "../api/chatApi";
 import Messages from "./Messages";
 
 const ChatPage = () => {
