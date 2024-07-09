@@ -1,6 +1,5 @@
 import { useGetMessagesQuery, useSendMessageMutation } from "../api/chatApi";
-import { useEffect } from "react";
-import { setupSocket } from "../api/chatApi";
+import { useSelector } from "react-redux";
 
 const Messages = ({ channel }) => {
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery();
@@ -10,17 +9,11 @@ const Messages = ({ channel }) => {
     { isLoading: sendMessageLoading, error: sendMessageError },
   ] = useSendMessageMutation();
 
-  const username = JSON.parse(localStorage.getItem("username"));
+  const username = useSelector((state) => state.auth.username);
 
   const channelMessages = messages?.filter(
     (message) => message.channelId === channel.id
   );
-
-  useEffect(() => {
-    const cleanup = setupSocket();
-
-    return cleanup;
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,7 +38,9 @@ const Messages = ({ channel }) => {
           <p className="m-0">
             <b># {channel.name}</b>
           </p>
-          <span className="text-muted">0 сообщений</span>
+          <span className="text-muted">
+            {channelMessages && channelMessages.length} сообщений
+          </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messagesLoading && <p>Загрузка сообщений...</p>}
