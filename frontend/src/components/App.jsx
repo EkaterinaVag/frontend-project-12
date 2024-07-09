@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import ChatPage from "./ChatPage";
-import AuthNavbar from "./Navbar";
+import AuthNavbar from "./AuthNavbar";
 
 const App = () => {
   return (
