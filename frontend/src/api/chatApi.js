@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { io } from "socket.io-client";
 
 const getAuthHeader = () => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
@@ -22,6 +22,14 @@ export const chatApi = createApi({
       query: () => "channels",
       providesTags: ["Channel"],
     }),
+    addChannel: builder.mutation({
+      query: (channelName) => ({
+        url: "channels",
+        method: "POST",
+        body: { name: channelName },
+      }),
+      invalidatesTags: ["Channel"],
+    }),
     getMessages: builder.query({
       query: () => "messages",
       providesTags: ["Message"],
@@ -37,17 +45,23 @@ export const chatApi = createApi({
   }),
 });
 
-const socket = io("http://localhost:3001");
-const handleNewMessage = (payload) => chatApi.endpoints.getMessage.invalidate();
+const socket = io();
+const handleNewMessage = () => chatApi.endpoints.getMessage.invalidate();
+const handleNewChannel = () => chatApi.endpoints.getChannels.invalidate();
 
 export const setupSocket = () => {
   socket.on("newMessage", handleNewMessage);
+  socket.on("newChannel", handleNewChannel);
 
-  return () => socket.off("newMessage", handleNewMessage);
+  return () => {
+    socket.off("newMessage", handleNewMessage);
+    socket.off("newChannel", handleNewChannel);
+  };
 };
 
 export const {
   useGetChannelsQuery,
+  useAddChannelMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
 } = chatApi;
