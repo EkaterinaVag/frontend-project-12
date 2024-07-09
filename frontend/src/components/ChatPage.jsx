@@ -1,24 +1,46 @@
-import { useEffect, useContext, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector} from "react-redux";
+import { openAddChannelModal, closeAddChannelModal } from "../modalSlice";
 import { useGetChannelsQuery } from "../api/chatApi";
 import Messages from "./Messages";
+import AddChannelModal from "./AddChannelModal";
+import { useAddChannelMutation } from "../api/chatApi";
+import { setupSocket } from "../api/chatApi";
+import { useDispatch } from "react-redux";
 
 const ChatPage = () => {
-  const { data: channels, isLoading, error } = useGetChannelsQuery();
-  const authContext = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const { data: channels, isLoading, error, refetch } = useGetChannelsQuery();
+  const [addChannel] = useAddChannelMutation();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
 
-  const [activeChannel, setActiveChannel] = useState({
+  const showAddChannelModal = useSelector(
+    (state) => state.modal.showAddChannelModal
+  );
+
+  const [currentChannel, setCurrentChannel] = useState({
     id: "1",
     name: "general",
     removable: false,
   });
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("token"));
-    token ? authContext.logIn() : navigate("/login");
-  }, [authContext, navigate]);
+    const cleanup = setupSocket(); 
+
+    return cleanup();
+  }, []);
+
+  useEffect(() => { 
+    refetch(); 
+  }, [refetch]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
 
   if (isLoading) return "Loading...";
   if (error) return `Error: ${error}`;
@@ -32,9 +54,16 @@ const ChatPage = () => {
             <button
               type="button"
               className="p-0 text-primary btn btn-group-vertical"
+              onClick={() => dispatch(openAddChannelModal())}
             >
-              <span className="visually-hidden">+</span>
+              +<span className="visually-hidden">+</span>
             </button>
+            {showAddChannelModal && (
+              <AddChannelModal
+                onHide={() => dispatch(closeAddChannelModal())}
+                addChannel={addChannel}
+              />
+            )}
           </div>
           <ul
             id="channels-box"
@@ -46,9 +75,9 @@ const ChatPage = () => {
                   <button
                     type="button"
                     className={`w-100 rounded-0 text-start btn ${
-                      activeChannel.id === channel.id ? "btn-secondary" : ""
+                      currentChannel.id === channel.id ? "btn-secondary" : ""
                     }`}
-                    onClick={() => setActiveChannel(channel)}
+                    onClick={() => setCurrentChannel(channel)}
                   >
                     <span className="me-1">#</span>
                     {channel.name}
@@ -57,7 +86,7 @@ const ChatPage = () => {
               ))}
           </ul>
         </div>
-        <Messages channel={activeChannel} />
+        <Messages channel={currentChannel} />
       </div>
     </div>
   );
