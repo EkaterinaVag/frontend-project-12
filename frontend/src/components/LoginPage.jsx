@@ -1,17 +1,18 @@
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext";
 import image from "../assets/image.jpg";
+import { login } from "../authSlice";
 
 const apiPath = "/api/v1";
 const url = () => [apiPath, "login"].join("/");
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
-  const { logIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = useRef();
 
@@ -21,17 +22,17 @@ const LoginPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
         const res = await axios.post(url(), values);
-        localStorage.setItem("token", JSON.stringify(res.data.token));
-        localStorage.setItem("username", JSON.stringify(res.data.username));
-        logIn();
-        navigate("/");
+        const token = res.data.token;
+        const username = res.data.username;
+        dispatch(login({ token, username }));
+        navigate('/');
       } catch {
         setAuthFailed(true);
       }
