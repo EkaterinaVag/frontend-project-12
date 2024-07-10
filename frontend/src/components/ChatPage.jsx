@@ -9,7 +9,7 @@ import {
 } from "../api/chatApi";
 import Messages from "./Messages";
 import AddChannelModal from "./AddChannelModal";
-import ChannelManagement from "./ ChannelManagement";
+import ChannelManagement from "./ChannelManagement";
 
 
 const ChatPage = () => {
