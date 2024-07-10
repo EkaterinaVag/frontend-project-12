@@ -1,11 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   showAddChannelModal: false,
+  showRenameChannelModal: false,
+  showRemoveChannelModal: false,
 };
 
 const modalSlice = createSlice({
-  name: 'modal',
+  name: "modal",
   initialState,
   reducers: {
     openAddChannelModal: (state) => {
@@ -14,8 +16,27 @@ const modalSlice = createSlice({
     closeAddChannelModal: (state) => {
       state.showAddChannelModal = false;
     },
+    openRenameChannelModal: (state) => {
+      state.showRenameChannelModal = true;
+    },
+    closeRenameChannelModal: (state) => {
+      state.showRenameChannelModal = false;
+    },
+    openRemoveChannelModal: (state) => {
+      state.showRemoveChannelModal = true;
+    },
+    closeRemoveChannelModal: (state) => {
+      state.showRemoveChannelModal = false;
+    },
   },
 });
 
-export const { openAddChannelModal, closeAddChannelModal } = modalSlice.actions;
+export const {
+  openAddChannelModal,
+  closeAddChannelModal,
+  openRemoveChannelModal,
+  closeRemoveChannelModal,
+  openRenameChannelModal,
+  closeRenameChannelModal,
+} = modalSlice.actions;
 export default modalSlice.reducer;
