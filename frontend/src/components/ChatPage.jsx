@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { openAddChannelModal, closeAddChannelModal } from "../modalSlice";
-import { useGetChannelsQuery } from "../api/chatApi";
+import {
+  useGetChannelsQuery,
+  useAddChannelMutation,
+  setupSocket,
+} from "../api/chatApi";
 import Messages from "./Messages";
 import AddChannelModal from "./AddChannelModal";
-import { useAddChannelMutation } from "../api/chatApi";
-import { setupSocket } from "../api/chatApi";
-import { useDispatch } from "react-redux";
+import ChannelManagement from "./ ChannelManagement";
+
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -27,18 +30,18 @@ const ChatPage = () => {
   });
 
   useEffect(() => {
-    const cleanup = setupSocket(); 
+    const cleanup = setupSocket();
 
     return cleanup();
   }, []);
 
-  useEffect(() => { 
-    refetch(); 
+  useEffect(() => {
+    refetch();
   }, [refetch]);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
@@ -72,16 +75,25 @@ const ChatPage = () => {
             {channels &&
               channels.map((channel) => (
                 <li className="nav-item w-100" key={channel.id}>
-                  <button
-                    type="button"
-                    className={`w-100 rounded-0 text-start btn ${
-                      currentChannel.id === channel.id ? "btn-secondary" : ""
-                    }`}
-                    onClick={() => setCurrentChannel(channel)}
-                  >
-                    <span className="me-1">#</span>
-                    {channel.name}
-                  </button>
+       
+                  <div role="group" className="d-flex dropdown btn-group">
+                    <button
+                      type="button"
+                      className={`w-100 rounded-0 text-start btn ${
+                        currentChannel.id === channel.id ? "btn-secondary" : ""
+                      }`}
+                      onClick={() => setCurrentChannel(channel)}
+                    >
+                      <span className="me-1">#</span>
+                      {channel.name}
+                    </button>
+                    {channel.removable && (
+                      <ChannelManagement
+                        currentChannel={currentChannel}
+                        channel={channel}
+                      />
+                    )}
+                  </div>
                 </li>
               ))}
           </ul>
