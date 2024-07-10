@@ -30,6 +30,21 @@ export const chatApi = createApi({
       }),
       invalidatesTags: ["Channel"],
     }),
+    renameChannel: builder.mutation({
+      query: (channelName, id) => ({
+        url: `channels/${id}`,
+        method: "PATCH",
+        body: { name: channelName },
+      }),
+      invalidatesTags: ["Channel"],
+    }),
+    removeChannel: builder.mutation({
+      query: (id) => ({
+        url: `channels/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Channel", 'Message'],
+    }),
     getMessages: builder.query({
       query: () => "messages",
       providesTags: ["Message"],
@@ -48,20 +63,28 @@ export const chatApi = createApi({
 const socket = io();
 const handleNewMessage = () => chatApi.endpoints.getMessage.invalidate();
 const handleNewChannel = () => chatApi.endpoints.getChannels.invalidate();
+const handleRemoveChannel = () => chatApi.endpoints.getChannels.invalidate();
+const handleRenameChannel = () => chatApi.endpoints.getChannels.invalidate();
 
 export const setupSocket = () => {
   socket.on("newMessage", handleNewMessage);
   socket.on("newChannel", handleNewChannel);
+  socket.on("removeChannel", handleRemoveChannel);
+  socket.on("renameChannel", handleRenameChannel);
 
   return () => {
     socket.off("newMessage", handleNewMessage);
     socket.off("newChannel", handleNewChannel);
+    socket.off("removeChannel", handleRemoveChannel);
+    socket.off("renameChannel", handleRenameChannel);
   };
 };
 
 export const {
   useGetChannelsQuery,
   useAddChannelMutation,
+  useRemoveChannelMutation,
+  useRenameChannelMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
 } = chatApi;
