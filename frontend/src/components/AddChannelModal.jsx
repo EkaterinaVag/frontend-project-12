@@ -24,7 +24,7 @@ const AddChannelModal = ({ onHide, addChannel }) => {
   const formik = useFormik({
     validationSchema: schema,
     initialValues: {
-      name: '',
+      name: "",
     },
     onSubmit: (values) => {
       addChannel(values.name);
@@ -34,7 +34,7 @@ const AddChannelModal = ({ onHide, addChannel }) => {
   });
 
   return (
-    <Modal show>
+    <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>Добавить канал</Modal.Title>
       </Modal.Header>
@@ -58,17 +58,21 @@ const AddChannelModal = ({ onHide, addChannel }) => {
               </FormControl.Feedback>
             )}
           </FormGroup>
-          <button
-            type="button"
-            className="btn btn-secondary mt-2"
-            aria-label="Отменить"
-            onClick={onHide}
+          <div
+            style={{ display: "flex", justifyContent: "flex-end", gap: "5px", marginTop: "10px" }}
           >
-            Отменить
-          </button>
-          <button type="submit" className="btn btn-primary mt-2">
-            Добавить
-          </button>
+            <button
+              type="button"
+              className="btn btn-secondary mt-2"
+              aria-label="Отменить"
+              onClick={onHide}
+            >
+              Отменить
+            </button>
+            <button type="submit" className="btn btn-primary mt-2">
+              Добавить
+            </button>
+          </div>
         </form>
       </Modal.Body>
     </Modal>
