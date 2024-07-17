@@ -43,7 +43,29 @@ export const chatApi = createApi({
         url: `channels/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Channel", 'Message'],
+      invalidatesTags: ["Channel", "Message"],
+      extraReducers: (builder) => {
+        builder.addCase(
+          chatApi.endpoints.removeChannel.fulfilled,
+          (state, action) => {
+            const channelId = action.payload.id;
+            const messagesToDelete = state.entities.messages.filter(
+              (message) => message.channelId === channelId
+            );
+
+            messagesToDelete.forEach((message) => {
+              chatApi.endpoints.removeMessages.initiate(message.id);
+            });
+          }
+        );
+      },
+    }),
+    removeMessages: builder.mutation({
+      query: (id) => ({
+        url: `messages/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Message"],
     }),
     getMessages: builder.query({
       query: () => "messages",
@@ -61,10 +83,10 @@ export const chatApi = createApi({
 });
 
 const socket = io();
-const handleNewMessage = () => chatApi.endpoints.getMessage.invalidate();
-const handleNewChannel = () => chatApi.endpoints.getChannels.invalidate();
-const handleRemoveChannel = () => chatApi.endpoints.getChannels.invalidate();
-const handleRenameChannel = () => chatApi.endpoints.getChannels.invalidate();
+const handleNewMessage = () => chatApi.endpoints.getMessage.initiate();
+const handleNewChannel = () => chatApi.endpoints.getChannels.initiate();
+const handleRemoveChannel = () => chatApi.endpoints.getChannels.initiate();
+const handleRenameChannel = () => chatApi.endpoints.getChannels.initiate();
 
 export const setupSocket = () => {
   socket.on("newMessage", handleNewMessage);
