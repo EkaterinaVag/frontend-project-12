@@ -1,27 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { openAddChannelModal, closeAddChannelModal } from "../modalSlice";
-import {
-  useGetChannelsQuery,
-  useAddChannelMutation,
-  setupSocket,
-} from "../api/chatApi";
+import { openAddChannelModal } from "../slices/modalSlice";
+import { useGetChannelsQuery, setupSocket } from "../api/chatApi";
 import Messages from "./Messages";
-import AddChannelModal from "./AddChannelModal";
-import ChannelManagement from "./ChannelManagement";
-
+import ChannelManagement from "./DropdownMenu";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { data: channels, isLoading, error, refetch } = useGetChannelsQuery();
-  const [addChannel] = useAddChannelMutation();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
-
-  const showAddChannelModal = useSelector(
-    (state) => state.modal.showAddChannelModal
-  );
 
   const [currentChannel, setCurrentChannel] = useState({
     id: "1",
@@ -61,12 +50,6 @@ const ChatPage = () => {
             >
               +<span className="visually-hidden">+</span>
             </button>
-            {showAddChannelModal && (
-              <AddChannelModal
-                onHide={() => dispatch(closeAddChannelModal())}
-                addChannel={addChannel}
-              />
-            )}
           </div>
           <ul
             id="channels-box"
@@ -75,9 +58,8 @@ const ChatPage = () => {
             {channels &&
               channels.map((channel) => (
                 <li className="nav-item w-100" key={channel.id}>
-       
                   <div role="group" className="d-flex dropdown btn-group">
-                    <button
+                    {!channel.removable && <button
                       type="button"
                       className={`w-100 rounded-0 text-start btn ${
                         currentChannel.id === channel.id ? "btn-secondary" : ""
@@ -86,10 +68,11 @@ const ChatPage = () => {
                     >
                       <span className="me-1">#</span>
                       {channel.name}
-                    </button>
+                    </button>}
                     {channel.removable && (
                       <ChannelManagement
                         currentChannel={currentChannel}
+                        setChannel={setCurrentChannel}
                         channel={channel}
                       />
                     )}
