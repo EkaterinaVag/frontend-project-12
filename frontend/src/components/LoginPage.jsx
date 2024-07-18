@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import image from "../assets/image.jpg";
-import { login } from "../authSlice";
+import { login } from "../slices/authSlice";
 
 const apiPath = "/api/v1";
 const url = () => [apiPath, "login"].join("/");
