@@ -5,12 +5,14 @@ import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import ChatPage from "./ChatPage";
 import AuthNavbar from "./AuthNavbar";
+import ModalsContainer from "../components/modals/ModalsContainer";
 
 const App = () => {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column h-100">
         <AuthNavbar />
+        <ModalsContainer />
         <Routes>
           <Route path="/" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
