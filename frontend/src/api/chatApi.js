@@ -31,10 +31,10 @@ export const chatApi = createApi({
       invalidatesTags: ["Channel"],
     }),
     renameChannel: builder.mutation({
-      query: (channelName, id) => ({
+      query: ({ name, id }) => ({
         url: `channels/${id}`,
         method: "PATCH",
-        body: { name: channelName },
+        body: { name },
       }),
       invalidatesTags: ["Channel"],
     }),
