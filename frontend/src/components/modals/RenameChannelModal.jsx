@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
+import channelNameValidate from "../../channelNameValidate";
+import { useGetChannelsQuery } from '../../api/chatApi';
 
 const RenameChannelModal = ({ onHide, renameChannel }) => {
   const selectedChannel = useSelector(state => state.modal.selectedChannel);
@@ -11,7 +13,11 @@ const RenameChannelModal = ({ onHide, renameChannel }) => {
     inputRef.current.focus();
   }, []);
 
+  const { data: channels } = useGetChannelsQuery();
+  const channelNames = channels?.map((channel) => channel.name) || [];
+
   const formik = useFormik({
+    validationSchema: channelNameValidate(channelNames),
     initialValues: {
       name: selectedChannel.name,
     },
@@ -36,9 +42,15 @@ const RenameChannelModal = ({ onHide, renameChannel }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
+              isInvalid={formik.touched.name && formik.errors.name}
               data-testid="input-name"
               name="name"
             />
+            {formik.touched.name && formik.errors.name && (
+              <FormControl.Feedback type="invalid">
+                {formik.errors.name}
+              </FormControl.Feedback>
+            )}
           </FormGroup>
           <div
             style={{
