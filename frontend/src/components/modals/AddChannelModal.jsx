@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { Modal, FormGroup, FormControl } from "react-bootstrap";
-import * as yup from "yup";
+import channelNameValidate from "../../channelNameValidate";
 import { useGetChannelsQuery } from "../../api/chatApi";
+import { setCurrentChannel } from "../../slices/currentChannelSlice";
 
 const AddChannelModal = ({ onHide, addChannel }) => {
   const inputRef = useRef(null);
@@ -13,22 +15,19 @@ const AddChannelModal = ({ onHide, addChannel }) => {
   const { data: channels } = useGetChannelsQuery();
   const channelNames = channels?.map((channel) => channel.name) || [];
 
-  const schema = yup.object().shape({
-    name: yup
-      .string()
-      .min(3, "От 3 до 20 символов")
-      .max(20, "От 3 до 20 символов")
-      .notOneOf(channelNames, "Должно быть уникальным")
-      .required("Обязательное поле"),
-  });
+  const dispatch = useDispatch();
+
   const formik = useFormik({
-    validationSchema: schema,
+    validationSchema: channelNameValidate(channelNames),
     initialValues: {
       name: "",
     },
     onSubmit: (values) => {
       addChannel(values.name);
-      // setCurrentChannel(channels.find((channel) => channel.name === values.name))
+      const newChannel = channels?.find(
+        (channel) => channel.name === values.name
+      );
+      dispatch(setCurrentChannel(newChannel));
       onHide();
     },
   });
@@ -59,7 +58,12 @@ const AddChannelModal = ({ onHide, addChannel }) => {
             )}
           </FormGroup>
           <div
-            style={{ display: "flex", justifyContent: "flex-end", gap: "5px", marginTop: "10px" }}
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "5px",
+              marginTop: "10px",
+            }}
           >
             <button
               type="button"
