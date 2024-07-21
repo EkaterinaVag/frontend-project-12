@@ -1,12 +1,17 @@
-import { useDispatch } from "react-redux";
-import { Dropdown, Button, ButtonGroup } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Dropdown, ButtonGroup } from "react-bootstrap";
+import ChannelItem from "./ChannelItem";
 import {
   openRenameChannelModal,
   openRemoveChannelModal,
 } from "../slices/modalSlice";
 
-const ChannelManagement = ({ currentChannel, setChannel, channel }) => {
+const DropdownMenu = ({ channel }) => {
   const dispatch = useDispatch();
+
+  const currentChannel = useSelector(
+    (state) => state.currentChannel.currentChannel
+  );
 
   const handleRemoveChannel = () => {
     dispatch(openRemoveChannelModal(channel));
@@ -18,15 +23,7 @@ const ChannelManagement = ({ currentChannel, setChannel, channel }) => {
 
   return (
     <Dropdown as={ButtonGroup} className="col-4 col-md-2">
-      <Button
-        variant={currentChannel.id === channel.id ? "secondary" : ""}
-        onClick={() => setChannel(channel)}
-      >
-        <span className="me-1">#</span>
-        <span className="text-truncate" title={channel.name}>
-          {channel.name}
-        </span>
-      </Button>
+      <ChannelItem />
       <Dropdown.Toggle
         split
         variant={currentChannel.id === channel.id ? "secondary" : ""}
@@ -44,4 +41,4 @@ const ChannelManagement = ({ currentChannel, setChannel, channel }) => {
   );
 };
 
-export default ChannelManagement;
+export default DropdownMenu;
