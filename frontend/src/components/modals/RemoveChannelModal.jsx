@@ -1,12 +1,20 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentChannel } from "../../slices/currentChannelSlice";
+import { useGetChannelsQuery } from "../../api/chatApi";
 
 const RemoveChannelModal = ({ onHide, removeChannel }) => {
-  const selectedChannel = useSelector(state => state.modal.selectedChannel);
+  const dispatch = useDispatch();
+  const selectedChannel = useSelector((state) => state.modal.selectedChannel);
+
+  const { data: channels } = useGetChannelsQuery();
+  const generalChannel = channels[0];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     removeChannel(selectedChannel.id);
+    dispatch(setCurrentChannel(generalChannel));
     onHide();
   };
 
