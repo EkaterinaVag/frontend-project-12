@@ -1,7 +1,10 @@
 import { useGetMessagesQuery, useSendMessageMutation } from "../api/chatApi";
 import { useSelector } from "react-redux";
 
-const Messages = ({ channel }) => {
+const Messages = () => {
+  const currentChannel = useSelector(
+    (state) => state.currentChannel.currentChannel
+  );
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery();
 
   const [
@@ -12,14 +15,14 @@ const Messages = ({ channel }) => {
   const username = useSelector((state) => state.auth.username);
 
   const channelMessages = messages?.filter(
-    (message) => message.channelId === channel.id
+    (message) => message.channelId === currentChannel.id
   );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newMessage = {
       body: event.target.body.value,
-      channelId: channel.id,
+      channelId: currentChannel.id,
       username: username,
     };
 
@@ -36,7 +39,7 @@ const Messages = ({ channel }) => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># {channel.name}</b>
+            <b># {currentChannel.name}</b>
           </p>
           <span className="text-muted">
             {channelMessages && channelMessages.length} сообщений
