@@ -1,41 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { openAddChannelModal } from "../slices/modalSlice";
-import { useGetChannelsQuery, setupSocket } from "../api/chatApi";
+import { setupSocket } from "../api/chatApi";
 import Messages from "./Messages";
-import ChannelManagement from "./DropdownMenu";
+import ChannelList from "./ChannelsList";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const { data: channels, isLoading, error, refetch } = useGetChannelsQuery();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
 
-  const [currentChannel, setCurrentChannel] = useState({
-    id: "1",
-    name: "general",
-    removable: false,
-  });
-
   useEffect(() => {
     const cleanup = setupSocket();
-
     return cleanup();
   }, []);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
-
-  if (isLoading) return "Loading...";
-  if (error) return `Error: ${error}`;
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -51,37 +36,9 @@ const ChatPage = () => {
               +<span className="visually-hidden">+</span>
             </button>
           </div>
-          <ul
-            id="channels-box"
-            className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
-          >
-            {channels &&
-              channels.map((channel) => (
-                <li className="nav-item w-100" key={channel.id}>
-                  <div role="group" className="d-flex dropdown btn-group">
-                    {!channel.removable && <button
-                      type="button"
-                      className={`w-100 rounded-0 text-start btn ${
-                        currentChannel.id === channel.id ? "btn-secondary" : ""
-                      }`}
-                      onClick={() => setCurrentChannel(channel)}
-                    >
-                      <span className="me-1">#</span>
-                      {channel.name}
-                    </button>}
-                    {channel.removable && (
-                      <ChannelManagement
-                        currentChannel={currentChannel}
-                        setChannel={setCurrentChannel}
-                        channel={channel}
-                      />
-                    )}
-                  </div>
-                </li>
-              ))}
-          </ul>
+          <ChannelList />
         </div>
-        <Messages channel={currentChannel} />
+        <Messages />
       </div>
     </div>
   );
