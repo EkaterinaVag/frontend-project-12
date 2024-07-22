@@ -23,7 +23,7 @@ const DropdownMenu = ({ channel }) => {
 
   return (
     <Dropdown as={ButtonGroup} className="col-4 col-md-2">
-      <ChannelItem />
+      <ChannelItem channel={channel} />
       <Dropdown.Toggle
         split
         variant={currentChannel.id === channel.id ? "secondary" : ""}
