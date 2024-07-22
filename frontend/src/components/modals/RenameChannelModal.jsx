@@ -3,11 +3,15 @@ import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
 import channelNameValidate from "../../channelNameValidate";
-import { useGetChannelsQuery } from '../../api/chatApi';
+import {
+  useGetChannelsQuery,
+  useRenameChannelMutation,
+} from "../../api/chatApi";
 
-const RenameChannelModal = ({ onHide, renameChannel }) => {
-  const selectedChannel = useSelector(state => state.modal.selectedChannel);
+const RenameChannelModal = ({ onHide }) => {
+  const selectedChannel = useSelector((state) => state.modal.selectedChannel);
   const inputRef = useRef(null);
+  const [renameChannel, { isLoading }] = useRenameChannelMutation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -63,7 +67,7 @@ const RenameChannelModal = ({ onHide, renameChannel }) => {
             <Button variant="secondary" onClick={onHide}>
               Отменить
             </Button>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={isLoading}>
               Отправить
             </Button>
           </div>
