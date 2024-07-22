@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import ChatPage from "./ChatPage";
+import SignupPage from "./SignupPage";
 import AuthNavbar from "./AuthNavbar";
 import ModalsContainer from "../components/modals/ModalsContainer";
 
@@ -16,6 +17,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
