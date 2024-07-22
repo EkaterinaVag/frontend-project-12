@@ -16,7 +16,7 @@ const AuthNavbar = () => {
   return (
     <Navbar expand="lg" className="shadow-sm navbar-light bg-white">
       <Container>
-        <Navbar.Brand href="#/">Hexlet Chat</Navbar.Brand>
+        <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
         {isAuthenticated && (
           <Button variant="primary" onClick={handleLogout}>
             Выйти
