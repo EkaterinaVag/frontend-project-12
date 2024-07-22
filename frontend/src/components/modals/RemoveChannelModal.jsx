@@ -2,14 +2,19 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentChannel } from "../../slices/currentChannelSlice";
-import { useGetChannelsQuery } from "../../api/chatApi";
+import {
+  useGetChannelsQuery,
+  useRemoveChannelMutation,
+} from "../../api/chatApi";
 
-const RemoveChannelModal = ({ onHide, removeChannel }) => {
+const RemoveChannelModal = ({ onHide }) => {
   const dispatch = useDispatch();
   const selectedChannel = useSelector((state) => state.modal.selectedChannel);
 
   const { data: channels } = useGetChannelsQuery();
   const generalChannel = channels[0];
+
+  const [removeChannel, { isLoading }] = useRemoveChannelMutation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,7 +38,7 @@ const RemoveChannelModal = ({ onHide, removeChannel }) => {
             <Button variant="secondary" onClick={onHide}>
               Отменить
             </Button>
-            <Button variant="danger" type="submit">
+            <Button variant="danger" type="submit" disabled={isLoading}>
               Удалить
             </Button>
           </div>
