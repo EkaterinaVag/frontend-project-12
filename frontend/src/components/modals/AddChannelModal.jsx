@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import { Modal, FormGroup, FormControl } from "react-bootstrap";
+import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
 import channelNameValidate from "../../channelNameValidate";
-import { useGetChannelsQuery } from "../../api/chatApi";
+import { useGetChannelsQuery, useAddChannelMutation } from "../../api/chatApi";
 import { setCurrentChannel } from "../../slices/currentChannelSlice";
 
-const AddChannelModal = ({ onHide, addChannel }) => {
+const AddChannelModal = ({ onHide }) => {
+  const [addChannel, { isLoading }] = useAddChannelMutation();
+
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
@@ -65,17 +67,12 @@ const AddChannelModal = ({ onHide, addChannel }) => {
               marginTop: "10px",
             }}
           >
-            <button
-              type="button"
-              className="btn btn-secondary mt-2"
-              aria-label="Отменить"
-              onClick={onHide}
-            >
+            <Button variant="secondary" onClick={onHide}>
               Отменить
-            </button>
-            <button type="submit" className="btn btn-primary mt-2">
+            </Button>
+            <Button variant="primary" type="submit" disabled={isLoading}>
               Добавить
-            </button>
+            </Button>
           </div>
         </form>
       </Modal.Body>
