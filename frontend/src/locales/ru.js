@@ -7,6 +7,12 @@ export default {
       confirm: "Уверены?",
       rename: "Переименовать канал",
     },
+    toastsTexts: {
+      add: "Канал создан",
+      rename: 'Канал переименован',
+      remove: 'Канал удалён',
+      error: 'Ошибка',
+    },
     buttons: {
       cancel: "Отменить",
       add: "Добавить",
