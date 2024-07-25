@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../slices/authSlice";
 import { Navbar, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import { logout } from "../slices/authSlice";
 
 const AuthNavbar = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -16,10 +19,10 @@ const AuthNavbar = () => {
   return (
     <Navbar expand="lg" className="shadow-sm navbar-light bg-white">
       <Container>
-        <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
+        <Navbar.Brand href="/">{t("main")}</Navbar.Brand>
         {isAuthenticated && (
           <Button variant="primary" onClick={handleLogout}>
-            Выйти
+            {t("buttons.logout")}
           </Button>
         )}
       </Container>
