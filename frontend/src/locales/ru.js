@@ -4,7 +4,7 @@ export default {
     modals: {
       addChannel: "Добавить канал",
       delete: "Удалить канал",
-      confifm: "Уверены?",
+      confirm: "Уверены?",
       rename: "Переименовать канал",
     },
     buttons: {
@@ -29,6 +29,7 @@ export default {
       error: "Неверные имя пользователя или пароль",
       exist: "Нет аккаунта?",
       registration: "Регистрация",
+      img: 'Вход',
     },
     notFoundPage: {
       noExist: "Страница не найдена",
@@ -40,8 +41,12 @@ export default {
       password: "Пароль",
       confirmPassword: "Подтвердите пароль",
       registration: "Зарегистрироваться",
+      error: "Такой пользователь уже существует",
+      header: "Регистрация",
     },
     messages: {
+      newMessage: "Новое сообщение",
+      printMessage: "Введите сообщение...",
       loading: "Загрузка сообщений...",
       key_one: "{{count}} сообщение",
       key_few: "{{count}} сообщения",
@@ -49,5 +54,6 @@ export default {
     },
     channels: "Каналы",
     dropdown: "Управление каналом",
+    main: "Hexlet Chat",
   },
 };
