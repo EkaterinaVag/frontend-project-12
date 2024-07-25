@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import channelNameValidate from "../../channelNameValidate";
 import {
   useGetChannelsQuery,
@@ -9,6 +10,7 @@ import {
 } from "../../api/chatApi";
 
 const RenameChannelModal = ({ onHide }) => {
+  const { t } = useTranslation();
   const selectedChannel = useSelector((state) => state.modal.selectedChannel);
   const inputRef = useRef(null);
   const [renameChannel, { isLoading }] = useRenameChannelMutation();
@@ -21,7 +23,7 @@ const RenameChannelModal = ({ onHide }) => {
   const channelNames = channels?.map((channel) => channel.name) || [];
 
   const formik = useFormik({
-    validationSchema: channelNameValidate(channelNames),
+    validationSchema: channelNameValidate(channelNames, t),
     initialValues: {
       name: selectedChannel.name,
     },
@@ -34,7 +36,7 @@ const RenameChannelModal = ({ onHide }) => {
   return (
     <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t("modals.rename")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -65,10 +67,10 @@ const RenameChannelModal = ({ onHide }) => {
             }}
           >
             <Button variant="secondary" onClick={onHide}>
-              Отменить
+              {t("buttons.cancel")}
             </Button>
             <Button variant="primary" type="submit" disabled={isLoading}>
-              Отправить
+              {t("buttons.send")}
             </Button>
           </div>
         </form>
