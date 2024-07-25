@@ -1,14 +1,11 @@
-import React from "react";
 import ReactDOMClient from "react-dom/client";
-import { Provider } from "react-redux";
 
-import { store } from "./store";
-import App from "./components/App";
+import init from "./init";
 
-const mountNode = document.getElementById("root");
-const root = ReactDOMClient.createRoot(mountNode);
-root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+const initApp = async () => {
+  const mountNode = document.getElementById("root");
+  const root = ReactDOMClient.createRoot(mountNode);
+  root.render(await init()); 
+};
+
+initApp();
