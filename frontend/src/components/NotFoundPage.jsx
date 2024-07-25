@@ -1,9 +1,13 @@
+import { useTranslation } from "react-i18next";
+
 const NotFoundPage = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="text-center">
-      <h1 className="h4 text-muted">Страница не найдена</h1>
+      <h1 className="h4 text-muted">{t("notFoundPage.noExist")}</h1>
       <p className="text-muted">
-        Но вы можете перейти <a href="/">на главную страницу</a>
+        {t("notFoundPage.link")} <a href="/">{t("notFoundPage.main")}</a>
       </p>
     </div>
   );
