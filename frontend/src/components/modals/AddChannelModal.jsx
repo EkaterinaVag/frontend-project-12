@@ -5,8 +5,11 @@ import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
 import channelNameValidate from "../../channelNameValidate";
 import { useGetChannelsQuery, useAddChannelMutation } from "../../api/chatApi";
 import { setCurrentChannel } from "../../slices/currentChannelSlice";
+import { useTranslation } from "react-i18next";
 
 const AddChannelModal = ({ onHide }) => {
+  const { t } = useTranslation();
+
   const [addChannel, { isLoading }] = useAddChannelMutation();
 
   const inputRef = useRef(null);
@@ -20,7 +23,7 @@ const AddChannelModal = ({ onHide }) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
-    validationSchema: channelNameValidate(channelNames),
+    validationSchema: channelNameValidate(channelNames, t),
     initialValues: {
       name: "",
     },
@@ -37,7 +40,7 @@ const AddChannelModal = ({ onHide }) => {
   return (
     <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t("modals.addChannel")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -68,10 +71,10 @@ const AddChannelModal = ({ onHide }) => {
             }}
           >
             <Button variant="secondary" onClick={onHide}>
-              Отменить
+              {t("buttons.cancel")}
             </Button>
             <Button variant="primary" type="submit" disabled={isLoading}>
-              Добавить
+              {t("buttons.add")}
             </Button>
           </div>
         </form>
