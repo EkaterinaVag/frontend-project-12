@@ -1,7 +1,10 @@
 import { useGetMessagesQuery, useSendMessageMutation } from "../api/chatApi";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Messages = () => {
+  const { t } = useTranslation();
+
   const currentChannel = useSelector(
     (state) => state.currentChannel.currentChannel
   );
@@ -42,11 +45,12 @@ const Messages = () => {
             <b># {currentChannel?.name}</b>
           </p>
           <span className="text-muted">
-            {channelMessages && channelMessages.length} сообщений
+            {channelMessages &&
+              t("messages.key", { count: channelMessages.length })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {messagesLoading && <p>Загрузка сообщений...</p>}
+          {messagesLoading && <p>{t("messages.loading")}</p>}
           {channelMessages &&
             channelMessages.map((message) => (
               <div key={message.id}>
@@ -64,8 +68,8 @@ const Messages = () => {
             <div className="input-group has-validation">
               <input
                 name="body"
-                aria-label="Новое сообщение"
-                placeholder="Введите сообщение..."
+                aria-label={t('messages.newMessage')}
+                placeholder={t('messages.printMessage')}
                 className="border-0 p-0 ps-2 form-control"
               />
               <button
@@ -73,7 +77,8 @@ const Messages = () => {
                 disabled={sendMessageLoading}
                 className="btn btn-group-vertical"
               >
-                <span className="visually-hidden">Отправить</span>
+                {t("buttons.send")}
+                <span className="visually-hidden"> {t("buttons.send")}</span>
               </button>
             </div>
           </form>
