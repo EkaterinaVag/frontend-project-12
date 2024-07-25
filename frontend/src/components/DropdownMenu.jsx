@@ -25,7 +25,7 @@ const DropdownMenu = ({ channel }) => {
   };
 
   return (
-    <Dropdown as={ButtonGroup} className="col-4 col-md-2">
+    <Dropdown as={ButtonGroup} className="me-2 w-100">
       <ChannelItem channel={channel} />
       <Dropdown.Toggle
         split
@@ -36,7 +36,7 @@ const DropdownMenu = ({ channel }) => {
 
       <Dropdown.Menu>
         <Dropdown.Item onClick={handleRemoveChannel}>
-          {t("buttons.delete")}
+          {t("buttons.remove")}
         </Dropdown.Item>
         <Dropdown.Item onClick={handleRenameChannel}>
           {t("buttons.rename")}
