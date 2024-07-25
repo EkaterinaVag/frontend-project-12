@@ -1,26 +1,27 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+
 import ChannelItem from "./ChannelItem";
 import DropdownMenu from "./DropdownMenu";
 import { useGetChannelsQuery } from "../api/chatApi";
 import { setCurrentChannel } from "../slices/currentChannelSlice";
 
 const ChannelList = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { data: channels, isLoading, error, refetch } = useGetChannelsQuery();
+
+  const { data: channels, isLoading, error } = useGetChannelsQuery();
 
   useEffect(() => {
     if (channels) {
       dispatch(setCurrentChannel(channels[0]));
     }
-  }, [channels, dispatch]);
+  }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
-
-  if (isLoading) return "Loading...";
-  if (error) return `Error: ${error}`; // нужно что-то полаконичнее
+  if (isLoading) return <div>{t("loadingChannels")}</div>;
+  if (error) toast.error(t("toastsTexts.error"));
 
   return (
     <ul
