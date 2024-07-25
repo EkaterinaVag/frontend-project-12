@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useFormik } from "formik";
 import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+
 import channelNameValidate from "../../channelNameValidate";
 import {
   useGetChannelsQuery,
@@ -11,10 +13,11 @@ import {
 
 const RenameChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
+
   const selectedChannel = useSelector((state) => state.modal.selectedChannel);
-  const inputRef = useRef(null);
   const [renameChannel, { isLoading }] = useRenameChannelMutation();
 
+  const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -27,9 +30,14 @@ const RenameChannelModal = ({ onHide }) => {
     initialValues: {
       name: selectedChannel.name,
     },
-    onSubmit: (values) => {
-      renameChannel({ name: values.name, id: selectedChannel.id });
-      onHide();
+    onSubmit: async ({ name }) => {
+      try {
+        await renameChannel({ name, id: selectedChannel.id });
+        toast.success(t("toastsTexts.rename"));
+        onHide();
+      } catch (err) {
+        toast.error(t("toastsTexts.error"));
+      }
     },
   });
 
