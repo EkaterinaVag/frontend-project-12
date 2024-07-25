@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { setCurrentChannel } from "../../slices/currentChannelSlice";
 import {
   useGetChannelsQuery,
@@ -8,6 +9,7 @@ import {
 } from "../../api/chatApi";
 
 const RemoveChannelModal = ({ onHide }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedChannel = useSelector((state) => state.modal.selectedChannel);
 
@@ -26,20 +28,20 @@ const RemoveChannelModal = ({ onHide }) => {
   return (
     <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t("modals.delete")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <p>Уверены?</p>
+        <p>{t("modals.confirm")}</p>
         <form onSubmit={handleSubmit}>
           <div
             style={{ display: "flex", justifyContent: "flex-end", gap: "5px" }}
           >
             <Button variant="secondary" onClick={onHide}>
-              Отменить
+              {t("buttons.cancel")}
             </Button>
             <Button variant="danger" type="submit" disabled={isLoading}>
-              Удалить
+              {t("buttons.delete")}
             </Button>
           </div>
         </form>
