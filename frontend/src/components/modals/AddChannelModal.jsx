@@ -2,13 +2,16 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+
 import channelNameValidate from "../../channelNameValidate";
 import { useGetChannelsQuery, useAddChannelMutation } from "../../api/chatApi";
 import { setCurrentChannel } from "../../slices/currentChannelSlice";
-import { useTranslation } from "react-i18next";
 
 const AddChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [addChannel, { isLoading }] = useAddChannelMutation();
 
@@ -20,20 +23,20 @@ const AddChannelModal = ({ onHide }) => {
   const { data: channels } = useGetChannelsQuery();
   const channelNames = channels?.map((channel) => channel.name) || [];
 
-  const dispatch = useDispatch();
-
   const formik = useFormik({
     validationSchema: channelNameValidate(channelNames, t),
     initialValues: {
       name: "",
     },
-    onSubmit: (values) => {
-      addChannel(values.name);
-      const newChannel = channels?.find(
-        (channel) => channel.name === values.name
-      );
-      dispatch(setCurrentChannel(newChannel));
-      onHide();
+    onSubmit: async ({ name }) => {
+      try {
+        const { data } = await addChannel(name);
+        dispatch(setCurrentChannel(data));
+        toast.success(t("toastsTexts.add"));
+        onHide();
+      } catch (err) {
+        toast.error(t("toastsTexts.error"));
+      }
     },
   });
 
