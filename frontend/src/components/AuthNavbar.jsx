@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Navbar, Container, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from 'react-redux';
+import { Navbar, Container, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { logout } from "../slices/authSlice";
+import { logout } from '../slices/authSlice';
 
 const AuthNavbar = () => {
   const { t } = useTranslation();
@@ -13,16 +13,16 @@ const AuthNavbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
     <Navbar expand="lg" className="shadow-sm navbar-light bg-white">
       <Container>
-        <Navbar.Brand href="/">{t("main")}</Navbar.Brand>
+        <Navbar.Brand href="/">{t('main')}</Navbar.Brand>
         {isAuthenticated && (
           <Button variant="primary" onClick={handleLogout}>
-            {t("buttons.logout")}
+            {t('buttons.logout')}
           </Button>
         )}
       </Container>

@@ -1,16 +1,16 @@
-import { useFormik } from "formik";
-import { Button, Form } from "react-bootstrap";
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useTranslation } from "react-i18next";
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
-import image from "../assets/image.jpg";
-import { login } from "../slices/authSlice";
+import image from '../assets/image.jpg';
+import { login } from '../slices/authSlice';
 
-const apiPath = "/api/v1";
-const url = () => [apiPath, "login"].join("/");
+const apiPath = '/api/v1';
+const url = () => [apiPath, 'login'].join('/');
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ const LoginPage = () => {
   const inputRef = useRef();
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
+    if (isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
@@ -30,17 +30,17 @@ const LoginPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
         const res = await axios.post(url(), values);
-        const token = res.data.token;
-        const username = res.data.username;
+        const { token } = res.data;
+        const { username } = res.data;
         dispatch(login({ token, username }));
-        navigate("/");
+        navigate('/');
       } catch {
         setAuthFailed(true);
       }
@@ -54,20 +54,24 @@ const LoginPage = () => {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={image} className="rounded-circle" alt={t("loginPage.img")} />
+                <img
+                  src={image}
+                  className="rounded-circle"
+                  alt={t('loginPage.img')}
+                />
               </div>
               <Form
                 className="col-12 col-md-6 mt-3 mt-mb-0"
                 onSubmit={formik.handleSubmit}
               >
                 <fieldset>
-                  <h1 className="text-center mb-4">{t("buttons.login")}</h1>
+                  <h1 className="text-center mb-4">{t('buttons.login')}</h1>
                   <Form.Group className="form-floating mb-3">
                     <Form.Control
                       name="username"
                       autoComplete="username"
                       required
-                      placeholder={t("loginPage.username")}
+                      placeholder={t('loginPage.username')}
                       id="username"
                       onChange={formik.handleChange}
                       value={formik.values.username}
@@ -75,7 +79,7 @@ const LoginPage = () => {
                       ref={inputRef}
                     />
                     <Form.Label htmlFor="username">
-                      {t("loginPage.username")}
+                      {t('loginPage.username')}
                     </Form.Label>
                   </Form.Group>
                   <Form.Group className="form-floating mb-4">
@@ -83,7 +87,7 @@ const LoginPage = () => {
                       name="password"
                       autoComplete="current-password"
                       required
-                      placeholder={t("loginPage.password")}
+                      placeholder={t('loginPage.password')}
                       type="password"
                       id="password"
                       onChange={formik.handleChange}
@@ -91,10 +95,10 @@ const LoginPage = () => {
                       isInvalid={authFailed}
                     />
                     <Form.Label htmlFor="password">
-                      {t("loginPage.password")}
+                      {t('loginPage.password')}
                     </Form.Label>
                     <Form.Control.Feedback type="invalid">
-                      {t("loginPage.error")}
+                      {t('loginPage.error')}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Button
@@ -102,15 +106,16 @@ const LoginPage = () => {
                     variant="outline-primary"
                     className="w-100 mb-3"
                   >
-                    {t("buttons.login")}
+                    {t('buttons.login')}
                   </Button>
                 </fieldset>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t("loginPage.exist")}</span>{" "}
-                <a href="/signup">{t("loginPage.registration")}</a>
+                <span>{t('loginPage.exist')}</span>
+                {' '}
+                <a href="/signup">{t('loginPage.registration')}</a>
               </div>
             </div>
           </div>
