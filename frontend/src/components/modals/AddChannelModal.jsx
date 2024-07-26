@@ -1,13 +1,16 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useFormik } from "formik";
-import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import React, { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import {
+  Modal, FormGroup, FormControl, Button,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
-import channelNameValidate from "../../channelNameValidate";
-import { useGetChannelsQuery, useAddChannelMutation } from "../../api/chatApi";
-import { setCurrentChannel } from "../../slices/currentChannelSlice";
+import channelNameValidate from '../../channelNameValidate';
+import { useGetChannelsQuery, useAddChannelMutation } from '../../api/chatApi';
+import { setCurrentChannel } from '../../slices/currentChannelSlice';
 
 const AddChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
@@ -26,16 +29,17 @@ const AddChannelModal = ({ onHide }) => {
   const formik = useFormik({
     validationSchema: channelNameValidate(channelNames, t),
     initialValues: {
-      name: "",
+      name: '',
     },
     onSubmit: async ({ name }) => {
       try {
-        const { data } = await addChannel(name);
+        const filtredName = filter.clean(name);
+        const { data } = await addChannel(filtredName);
         dispatch(setCurrentChannel(data));
-        toast.success(t("toastsTexts.add"));
+        toast.success(t('toastsTexts.add'));
         onHide();
       } catch (err) {
-        toast.error(t("toastsTexts.error"));
+        toast.error(t('toastsTexts.error'));
       }
     },
   });
@@ -43,9 +47,8 @@ const AddChannelModal = ({ onHide }) => {
   return (
     <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t("modals.addChannel")}</Modal.Title>
+        <Modal.Title>{t('modals.addChannel')}</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
@@ -67,17 +70,17 @@ const AddChannelModal = ({ onHide }) => {
           </FormGroup>
           <div
             style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: "5px",
-              marginTop: "10px",
+              display: 'flex',
+              justifyContent: 'flex-end',
+              gap: '5px',
+              marginTop: '10px',
             }}
           >
             <Button variant="secondary" onClick={onHide}>
-              {t("buttons.cancel")}
+              {t('buttons.cancel')}
             </Button>
             <Button variant="primary" type="submit" disabled={isLoading}>
-              {t("buttons.add")}
+              {t('buttons.add')}
             </Button>
           </div>
         </form>

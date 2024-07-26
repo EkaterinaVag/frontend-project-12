@@ -1,23 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
-import RenameChannelModal from "./RenameChannelModal";
-import RemoveChannelModal from "./RemoveChannelModal";
-import AddChannelModal from "./AddChannelModal";
+import { useDispatch, useSelector } from 'react-redux';
+import RenameChannelModal from './RenameChannelModal';
+import RemoveChannelModal from './RemoveChannelModal';
+import AddChannelModal from './AddChannelModal';
 import {
   closeRenameChannelModal,
   closeRemoveChannelModal,
   closeAddChannelModal,
-} from "../../slices/modalSlice";
+} from '../../slices/modalSlice';
 
 const ModalsContainer = ({ channel }) => {
   const dispatch = useDispatch();
   const showRemoveChannelModal = useSelector(
-    (state) => state.modal.showRemoveChannelModal
+    (state) => state.modal.showRemoveChannelModal,
   );
   const showRenameChannelModal = useSelector(
-    (state) => state.modal.showRenameChannelModal
+    (state) => state.modal.showRenameChannelModal,
   );
   const showAddChannelModal = useSelector(
-    (state) => state.modal.showAddChannelModal
+    (state) => state.modal.showAddChannelModal,
   );
 
   return (

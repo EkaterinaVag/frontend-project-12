@@ -1,15 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import { Modal, FormGroup, FormControl, Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useFormik } from "formik";
-import { toast } from "react-toastify";
+import React, { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import {
+  Modal, FormGroup, FormControl, Button,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
-import channelNameValidate from "../../channelNameValidate";
+import channelNameValidate from '../../channelNameValidate';
 import {
   useGetChannelsQuery,
   useRenameChannelMutation,
-} from "../../api/chatApi";
+} from '../../api/chatApi';
 
 const RenameChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
@@ -19,7 +22,7 @@ const RenameChannelModal = ({ onHide }) => {
 
   const inputRef = useRef(null);
   useEffect(() => {
-    inputRef.current.focus();
+    setTimeout(() => inputRef.current.select());
   }, []);
 
   const { data: channels } = useGetChannelsQuery();
@@ -32,11 +35,12 @@ const RenameChannelModal = ({ onHide }) => {
     },
     onSubmit: async ({ name }) => {
       try {
-        await renameChannel({ name, id: selectedChannel.id });
-        toast.success(t("toastsTexts.rename"));
+        const filtredName = filter.clean(name);
+        await renameChannel({ name: filtredName, id: selectedChannel.id });
+        toast.success(t('toastsTexts.rename'));
         onHide();
       } catch (err) {
-        toast.error(t("toastsTexts.error"));
+        toast.error(t('toastsTexts.error'));
       }
     },
   });
@@ -44,9 +48,8 @@ const RenameChannelModal = ({ onHide }) => {
   return (
     <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t("modals.rename")}</Modal.Title>
+        <Modal.Title>{t('modals.rename')}</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
@@ -68,17 +71,17 @@ const RenameChannelModal = ({ onHide }) => {
           </FormGroup>
           <div
             style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: "5px",
-              marginTop: "15px",
+              display: 'flex',
+              justifyContent: 'flex-end',
+              gap: '5px',
+              marginTop: '15px',
             }}
           >
             <Button variant="secondary" onClick={onHide}>
-              {t("buttons.cancel")}
+              {t('buttons.cancel')}
             </Button>
             <Button variant="primary" type="submit" disabled={isLoading}>
-              {t("buttons.send")}
+              {t('buttons.send')}
             </Button>
           </div>
         </form>

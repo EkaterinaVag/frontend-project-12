@@ -1,17 +1,17 @@
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { Button, Form } from "react-bootstrap";
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { login } from "../slices/authSlice";
-import signupImg from "../assets/signupImg.jpg";
+import { login } from '../slices/authSlice';
+import signupImg from '../assets/signupImg.jpg';
 
-const apiPath = "/api/v1";
-const url = () => [apiPath, "signup"].join("/");
+const apiPath = '/api/v1';
+const url = () => [apiPath, 'signup'].join('/');
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -22,43 +22,43 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
+    if (isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
   const shrema = yup.object().shape({
     username: yup
       .string()
-      .min(3, t("validate.max"))
-      .max(20, t("validate.max"))
-      .required(t("validate.required")),
+      .min(3, t('validate.max'))
+      .max(20, t('validate.max'))
+      .required(t('validate.required')),
     password: yup
       .string()
-      .min(3, t("validate.min"))
-      .required(t("validate.required")),
+      .min(3, t('validate.min'))
+      .required(t('validate.required')),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), null], t("validate.confPass"))
-      .required(t("validate.required")),
+      .oneOf([yup.ref('password'), null], t('validate.confPass'))
+      .required(t('validate.required')),
   });
 
   const formik = useFormik({
     validationSchema: shrema,
     initialValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
     onSubmit: async ({ username, password }) => {
       setRegistrationFailed(false);
       try {
         const newUser = { username, password };
         const res = await axios.post(url(), newUser);
-        const token = res.data.token;
+        const { token } = res.data;
         dispatch(login({ token, username }));
-        navigate("/");
+        navigate('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
-          setErrorMessage(t("signupPage.error"));
+          setErrorMessage(t('signupPage.error'));
           setRegistrationFailed(true);
         }
       }
@@ -75,22 +75,22 @@ const SignupPage = () => {
                 <img
                   src={signupImg}
                   className="rounded-circle"
-                  alt={t("signupPage.header")}
+                  alt={t('signupPage.header')}
                 />
               </div>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">{t("signupPage.header")}</h1>
+                <h1 className="text-center mb-4">{t('signupPage.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
-                    placeholder={t("validate.max")}
+                    placeholder={t('validate.max')}
                     name="username"
                     autoComplete="username"
                     required
                     id="username"
                     onBlur={formik.handleBlur}
                     isInvalid={
-                      (formik.touched.username && !!formik.errors.username) ||
-                      registrationFailed
+                      (formik.touched.username && !!formik.errors.username)
+                      || registrationFailed
                     }
                     onChange={formik.handleChange}
                     value={formik.values.username}
@@ -99,12 +99,12 @@ const SignupPage = () => {
                     {formik.errors.username}
                   </Form.Control.Feedback>
                   <Form.Label htmlFor="username">
-                    {t("signupPage.username")}
+                    {t('signupPage.username')}
                   </Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
-                    placeholder={t("validate.min")}
+                    placeholder={t('validate.min')}
                     name="password"
                     required
                     autoComplete="new-password"
@@ -112,8 +112,8 @@ const SignupPage = () => {
                     id="password"
                     onBlur={formik.handleBlur}
                     isInvalid={
-                      (formik.touched.password && !!formik.errors.password) ||
-                      registrationFailed
+                      (formik.touched.password && !!formik.errors.password)
+                      || registrationFailed
                     }
                     onChange={formik.handleChange}
                     value={formik.values.password}
@@ -122,12 +122,12 @@ const SignupPage = () => {
                     {formik.errors.password}
                   </Form.Control.Feedback>
                   <Form.Label htmlFor="password">
-                    {t("signupPage.password")}
+                    {t('signupPage.password')}
                   </Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
-                    placeholder={t("validate.confPass")}
+                    placeholder={t('validate.confPass')}
                     name="confirmPassword"
                     required
                     autoComplete="new-password"
@@ -135,9 +135,9 @@ const SignupPage = () => {
                     id="confirmPassword"
                     onBlur={formik.handleBlur}
                     isInvalid={
-                      (formik.touched.confirmPassword &&
-                        !!formik.errors.confirmPassword) ||
-                      registrationFailed
+                      (formik.touched.confirmPassword
+                        && !!formik.errors.confirmPassword)
+                      || registrationFailed
                     }
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
@@ -147,7 +147,7 @@ const SignupPage = () => {
                     {errorMessage}
                   </Form.Control.Feedback>
                   <Form.Label htmlFor="confirmPassword">
-                    {t("signupPage.confirmPassword")}
+                    {t('signupPage.confirmPassword')}
                   </Form.Label>
                 </Form.Group>
                 <Button
@@ -155,7 +155,7 @@ const SignupPage = () => {
                   className="w-100 mt-3"
                   variant="outline-primary"
                 >
-                  {t("signupPage.registration")}
+                  {t('signupPage.registration')}
                 </Button>
               </Form>
             </div>
