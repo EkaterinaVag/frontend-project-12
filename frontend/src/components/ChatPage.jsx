@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { setupSocket } from '../api/soket';
+import setupSocket from '../api/socket';
 import MessageContainer from './MessageContainer';
 import ChannelContainer from './ChannelContainer';
 
