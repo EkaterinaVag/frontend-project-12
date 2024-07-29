@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import {
+  Form, FormControl, FormGroup, Button,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const MessageForm = ({ handleSubmit, isLoading }) => {
@@ -13,12 +15,12 @@ const MessageForm = ({ handleSubmit, isLoading }) => {
   return (
     <div className="mt-auto px-5 py-3">
       <Form onSubmit={handleSubmit} className="py-1 border rounded-2">
-        <Form.Group className="has-validation d-flex align-items-center">
-          <Form.Control
+        <FormGroup className="has-validation d-flex align-items-center">
+          <FormControl
             name="body"
             aria-label={t('messages.newMessage')}
             placeholder={t('messages.printMessage')}
-            className="border-0 p-0 ps-2 flex-grow-1"
+            className="border-0 p-6 ps-2 flex-grow-1"
             ref={inputRef}
           />
           <Button
@@ -32,7 +34,7 @@ const MessageForm = ({ handleSubmit, isLoading }) => {
               {t('buttons.send')}
             </span>
           </Button>
-        </Form.Group>
+        </FormGroup>
       </Form>
     </div>
   );
