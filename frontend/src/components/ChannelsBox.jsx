@@ -19,7 +19,7 @@ const ChannelsBox = () => {
   const { data: channels, isLoading, error } = useGetChannelsQuery();
 
   useEffect(() => {
-    if (!currentChannel) {
+    if (!currentChannel && channels) {
       dispatch(setCurrentChannel(channels[0]));
     }
   }, [channels, currentChannel, dispatch]);
