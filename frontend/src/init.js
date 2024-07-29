@@ -1,6 +1,8 @@
 import i18next from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+// import 'dotenv/config.js';
 
 import resources from './locales/index';
 import store from './store';
@@ -16,12 +18,21 @@ const init = async () => {
     resources,
   });
 
+  const rollbarConfig = {
+    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+    environment: 'production',
+  };
+
   return (
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </I18nextProvider>
+    <RollbarProvider config={rollbarConfig}>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
+        </Provider>
+      </I18nextProvider>
+    </RollbarProvider>
   );
 };
 
