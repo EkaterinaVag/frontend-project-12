@@ -4,10 +4,10 @@ import { ToastContainer } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-import LoginPage from './LoginPage';
-import NotFoundPage from './NotFoundPage';
-import ChatPage from './ChatPage';
-import SignupPage from './SignupPage';
+import LoginPage from './pages/LoginPage';
+import NotFoundPage from './pages/NotFoundPage';
+import ChatPage from './pages/ChatPage';
+import SignupPage from './pages/SignupPage';
 import AuthNavbar from './AuthNavbar';
 import ModalsContainer from './modals/ModalsContainer';
 
