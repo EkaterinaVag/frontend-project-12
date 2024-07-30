@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import filter from 'leo-profanity';
-import { toast } from 'react-toastify';
 
 import { useGetMessagesQuery, useSendMessageMutation } from '../api/chatApi';
+import useSubmitMessage from '../hooks/useSubmitMessage';
 import MessagesBox from './MessagesBox';
 import MessageForm from './MessageForm';
 
@@ -22,22 +21,7 @@ const MessageContainer = () => {
     (message) => message.channelId === currentChannel?.id,
   );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const filtredMessage = filter.clean(e.target.body.value);
-    const newMessage = {
-      body: filtredMessage,
-      channelId: currentChannel?.id,
-      username,
-    };
-
-    try {
-      await addMessage(newMessage);
-      e.target.body.value = '';
-    } catch (err) {
-      toast.error(t('toastsTexts.error'));
-    }
-  };
+  const handleSubmit = useSubmitMessage(addMessage, currentChannel, username, t);
 
   return (
     <div className="col p-0 h-100">
