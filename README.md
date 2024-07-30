@@ -1,5 +1,6 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/EkaterinaVag/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/EkaterinaVag/frontend-project-12/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4f9ab95c549bc315cf39/maintainability)](https://codeclimate.com/github/EkaterinaVag/frontend-project-12/maintainability)
 
 # Real-Time Chat Application with React/Redux
 
