@@ -1,17 +1,9 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
 import FormContainer from '../FormContainer';
 import LoginFormContainer from '../loginForm/LoginFormContainer';
+import useAuth from '../../hooks/useAuth';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-  useEffect(() => {
-    if (isAuthenticated) navigate('/');
-  }, [isAuthenticated, navigate]);
+  useAuth();
 
   return <FormContainer FormComponent={LoginFormContainer} />;
 };
