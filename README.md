@@ -52,5 +52,6 @@ npm install
 4. *Start the frontend and backend servers:*
 
 ```
+make start-frontend
 make start
 ```
