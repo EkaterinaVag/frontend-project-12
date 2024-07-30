@@ -53,7 +53,6 @@ export default {
     messages: {
       newMessage: 'Новое сообщение',
       printMessage: 'Введите сообщение...',
-      loading: 'Загрузка сообщений...',
       key_one: '{{count}} сообщение',
       key_few: '{{count}} сообщения',
       key_many: '{{count}} сообщений',
@@ -61,6 +60,6 @@ export default {
     channels: 'Каналы',
     dropdown: 'Управление каналом',
     main: 'Hexlet Chat',
-    loadingChannels: 'Загрузка каналов...',
+    loading: 'Загрузка...',
   },
 };
