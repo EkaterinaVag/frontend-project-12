@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import ChannelItem from './ChannelItem';
 import DropdownMenu from './DropdownMenu';
+import Spinner from './Spinner';
 import { useGetChannelsQuery } from '../api/chatApi';
 import { setCurrentChannel } from '../slices/currentChannelSlice';
 
@@ -24,7 +25,7 @@ const ChannelsBox = () => {
     }
   }, [channels, currentChannel, dispatch]);
 
-  if (isLoading) return <div>{t('loadingChannels')}</div>;
+  if (isLoading) return <Spinner />;
   if (error) toast.error(t('toastsTexts.error'));
 
   return (
