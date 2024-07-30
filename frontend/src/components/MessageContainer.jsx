@@ -8,19 +8,11 @@ import MessageForm from './MessageForm';
 
 const MessageContainer = () => {
   const { t } = useTranslation();
-
-  const currentChannel = useSelector(
-    (state) => state.currentChannel.currentChannel,
-  );
+  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
   const username = useSelector((state) => state.auth.username);
-
   const [addMessage, { isLoading: sendMessageLoading }] = useSendMessageMutation();
-
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery();
-  const channelMessages = messages?.filter(
-    (message) => message.channelId === currentChannel?.id,
-  );
-
+  const channelMessages = messages?.filter((message) => message.channelId === currentChannel?.id);
   const handleSubmit = useSubmitMessage(addMessage, currentChannel, username, t);
 
   return (
@@ -38,14 +30,8 @@ const MessageContainer = () => {
               && t('messages.key', { count: channelMessages.length })}
           </span>
         </div>
-        <MessagesBox
-          channelMessages={channelMessages}
-          isLoading={messagesLoading}
-        />
-        <MessageForm
-          handleSubmit={handleSubmit}
-          isLoading={sendMessageLoading}
-        />
+        <MessagesBox channelMessages={channelMessages} isLoading={messagesLoading} />
+        <MessageForm handleSubmit={handleSubmit} isLoading={sendMessageLoading} />
       </div>
     </div>
   );
