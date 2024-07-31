@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 
 import channelNameValidate from '../../channelNameValidate';
+import { renameCurrentChannel } from '../../slices/currentChannelSlice';
 import ModalComponent from './ModalComponent';
 import {
   useGetChannelsQuery,
@@ -14,6 +15,7 @@ import {
 
 const RenameChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const selectedChannel = useSelector((state) => state.modal.selectedChannel);
   const [renameChannel, { isLoading }] = useRenameChannelMutation();
@@ -35,6 +37,7 @@ const RenameChannelModal = ({ onHide }) => {
       try {
         const filtredName = filter.clean(name);
         await renameChannel({ name: filtredName, id: selectedChannel.id });
+        dispatch(renameCurrentChannel(filtredName));
         toast.success(t('toastsTexts.rename'));
         onHide();
       } catch (err) {
@@ -47,6 +50,7 @@ const RenameChannelModal = ({ onHide }) => {
     <ModalComponent
       onHide={onHide}
       formik={formik}
+      onSubmit={formik.handleSubmit}
       titleKey="modals.rename"
       submitLabelKey="buttons.send"
       isLoading={isLoading}

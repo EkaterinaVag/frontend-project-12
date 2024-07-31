@@ -46,6 +46,7 @@ const AddChannelModal = ({ onHide }) => {
     <ModalComponent
       onHide={onHide}
       formik={formik}
+      onSubmit={formik.handleSubmit}
       titleKey="modals.addChannel"
       submitLabelKey="buttons.add"
       isLoading={isLoading}
