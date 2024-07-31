@@ -13,7 +13,6 @@ import {
 } from '../../api/chatApi';
 
 const RenameChannelModal = ({ onHide }) => {
-  const modalName = 'rename';
   const { t } = useTranslation();
 
   const selectedChannel = useSelector((state) => state.modal.selectedChannel);
@@ -48,7 +47,8 @@ const RenameChannelModal = ({ onHide }) => {
     <ModalComponent
       onHide={onHide}
       formik={formik}
-      modalName={modalName}
+      titleKey="modals.rename"
+      submitLabelKey="buttons.send"
       isLoading={isLoading}
       t={t}
       inputRef={inputRef}

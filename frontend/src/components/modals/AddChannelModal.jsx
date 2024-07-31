@@ -11,7 +11,6 @@ import { setCurrentChannel } from '../../slices/currentChannelSlice';
 import ModalComponent from './ModalComponent';
 
 const AddChannelModal = ({ onHide }) => {
-  const modalName = 'addChannel';
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -47,7 +46,8 @@ const AddChannelModal = ({ onHide }) => {
     <ModalComponent
       onHide={onHide}
       formik={formik}
-      modalName={modalName}
+      titleKey="modals.addChannel"
+      submitLabelKey="buttons.add"
       isLoading={isLoading}
       t={t}
       inputRef={inputRef}
