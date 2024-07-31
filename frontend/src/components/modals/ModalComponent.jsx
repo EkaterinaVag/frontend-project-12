@@ -1,49 +1,34 @@
-import {
-  Modal, FormGroup, FormControl, Button,
-} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import ModalForm from './ModalForm';
+import ModalInput from './ModalInput';
 
 const ModalComponent = ({
-  onHide, formik, titleKey, submitLabelKey, isLoading, t, inputRef,
+  onHide,
+  onSubmit,
+  titleKey,
+  submitLabelKey,
+  isLoading,
+  t,
+  formik,
+  inputRef,
 }) => (
   <Modal show centered>
     <Modal.Header closeButton onHide={onHide}>
       <Modal.Title>{t(titleKey)}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <form onSubmit={formik.handleSubmit}>
-        <FormGroup>
-          <FormControl
-            required
-            ref={inputRef}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            isInvalid={formik.touched.name && formik.errors.name}
-            data-testid="input-name"
-            name="name"
-          />
-          {formik.touched.name && formik.errors.name && (
-          <FormControl.Feedback type="invalid">
-            {formik.errors.name}
-          </FormControl.Feedback>
-          )}
-        </FormGroup>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap: '5px',
-            marginTop: '15px',
-          }}
-        >
-          <Button variant="secondary" onClick={onHide}>
-            {t('buttons.cancel')}
-          </Button>
-          <Button variant="primary" type="submit" disabled={isLoading}>
-            {t(submitLabelKey)}
-          </Button>
-        </div>
-      </form>
+      <ModalForm
+        onHide={onHide}
+        onSubmit={onSubmit}
+        submitLabelKey={submitLabelKey}
+        isLoading={isLoading}
+        t={t}
+      >
+        {titleKey !== 'modals.delete' ? (
+          <ModalInput formik={formik} inputRef={inputRef} />
+        ) : null}
+
+      </ModalForm>
     </Modal.Body>
   </Modal>
 );
