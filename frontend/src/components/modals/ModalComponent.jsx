@@ -3,11 +3,11 @@ import {
 } from 'react-bootstrap';
 
 const ModalComponent = ({
-  onHide, formik, modalName, isLoading, t, inputRef,
+  onHide, formik, titleKey, submitLabelKey, isLoading, t, inputRef,
 }) => (
   <Modal show centered>
     <Modal.Header closeButton onHide={onHide}>
-      <Modal.Title>{t(`modals.${modalName}`)}</Modal.Title>
+      <Modal.Title>{t(titleKey)}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <form onSubmit={formik.handleSubmit}>
@@ -40,7 +40,7 @@ const ModalComponent = ({
             {t('buttons.cancel')}
           </Button>
           <Button variant="primary" type="submit" disabled={isLoading}>
-            {t('buttons.send')}
+            {t(submitLabelKey)}
           </Button>
         </div>
       </form>
