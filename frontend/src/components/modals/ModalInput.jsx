@@ -13,8 +13,8 @@ const ModalInput = ({
       onBlur={formik.handleBlur}
       value={formik.values.name}
       isInvalid={formik.touched.name && formik.errors.name}
-      data-testid="input-name"
       name="name"
+      id="name"
     />
     <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
     {formik.touched.name && formik.errors.name && (
