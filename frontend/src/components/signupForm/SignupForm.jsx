@@ -31,7 +31,7 @@ const inputFields = [
 ];
 
 const SignupForm = ({ t }) => {
-  const { handleSubmit } = useSignup();
+  const { handleSubmit, errorMessage, registrationFailed } = useSignup();
 
   const formik = useFormik({
     validationSchema: signupFormValidate(t),
@@ -46,9 +46,16 @@ const SignupForm = ({ t }) => {
   return (
     <Form className="w-50" onSubmit={formik.handleSubmit}>
       <h1 className="text-center mb-4">{t('signupPage.header')}</h1>
-      {inputFields.map((field) => (
+      {inputFields.map((field, index) => (
         <Form.Group className="form-floating mb-3" key={field.name}>
-          <SignupFormInput formik={formik} t={t} field={field} />
+          <SignupFormInput
+            formik={formik}
+            t={t}
+            field={field}
+            errorMessage={errorMessage}
+            registrationFailed={registrationFailed}
+            lastItem={index === inputFields.length - 1}
+          />
         </Form.Group>
       ))}
       <Button type="submit" className="w-100 mt-3" variant="outline-primary">
