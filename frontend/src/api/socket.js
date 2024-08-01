@@ -2,9 +2,9 @@ import { io } from 'socket.io-client';
 import { chatApi } from './chatApi';
 
 const socket = io();
-const handleNewMessage = (payload) => {
+const handleNewMessage = () => {
   if (chatApi.endpoints && chatApi.endpoints.getMessage) {
-    chatApi.endpoints.getMessage.initiate(payload);
+    chatApi.endpoints.getMessage.invalidate();
   }
 };
 
