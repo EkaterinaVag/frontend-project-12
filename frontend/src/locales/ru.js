@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   translation: {
     modals: {
@@ -61,5 +60,6 @@ export default {
     dropdown: 'Управление каналом',
     main: 'Hexlet Chat',
     loading: 'Загрузка...',
+    plus: '+',
   },
 };
