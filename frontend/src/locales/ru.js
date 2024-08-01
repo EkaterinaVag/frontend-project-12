@@ -5,6 +5,7 @@ export default {
       delete: 'Удалить канал',
       confirm: 'Уверены?',
       rename: 'Переименовать канал',
+      channelName: 'Имя канала',
     },
     toastsTexts: {
       add: 'Канал создан',
