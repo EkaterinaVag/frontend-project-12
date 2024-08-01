@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import filter from 'leo-profanity';
 
 import resources from './locales/index';
 import store from './store';
@@ -9,6 +10,7 @@ import App from './components/App';
 
 const init = async () => {
   const defaultLang = 'ru';
+  filter.loadDictionary('ru');
 
   const i18n = i18next.createInstance();
   await i18n.use(initReactI18next).init({
