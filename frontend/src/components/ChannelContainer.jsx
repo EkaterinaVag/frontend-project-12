@@ -17,8 +17,8 @@ const ChannelContainer = () => {
           className="p-0 text-primary btn btn-group-vertical"
           onClick={() => dispatch(openAddChannelModal())}
         >
-          +
-          <span className="visually-hidden">+</span>
+          {t('plus')}
+          <span className="visually-hidden">{t('plus')}</span>
         </button>
       </div>
       <ChannelsBox />
