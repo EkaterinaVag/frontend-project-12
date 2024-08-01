@@ -10,7 +10,6 @@ import App from './components/App';
 
 const init = async () => {
   const defaultLang = 'ru';
-  filter.loadDictionary('ru');
 
   const i18n = i18next.createInstance();
   await i18n.use(initReactI18next).init({
@@ -18,6 +17,10 @@ const init = async () => {
     debug: true,
     resources,
   });
+
+  filter.loadDictionary('ru');
+  const badWordsEn = filter.getDictionary('en');
+  filter.add(badWordsEn);
 
   const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
