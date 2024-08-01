@@ -25,7 +25,7 @@ const ModalComponent = ({
         t={t}
       >
         {titleKey !== 'modals.delete' ? (
-          <ModalInput formik={formik} inputRef={inputRef} />
+          <ModalInput formik={formik} inputRef={inputRef} t={t} />
         ) : null}
 
       </ModalForm>
