@@ -2,8 +2,18 @@ import { io } from 'socket.io-client';
 import { chatApi } from './chatApi';
 
 const socket = io();
-const handleNewMessage = (payload) => chatApi.endpoints.getMessage.initiate(payload);
-const handleNewChannel = (payload) => chatApi.endpoints.getChannels.initiate(payload);
+const handleNewMessage = (payload) => {
+  if (chatApi.endpoints && chatApi.endpoints.getMessage) {
+    chatApi.endpoints.getMessage.initiate(payload);
+  }
+};
+
+const handleNewChannel = (payload) => {
+  if (chatApi.endpoints && chatApi.endpoints.getChannels) {
+    chatApi.endpoints.getChannels.initiate(payload);
+  }
+};
+
 const handleRemoveChannel = (payload) => chatApi.endpoints.getChannels.initiate(payload);
 const handleRenameChannel = (payload) => chatApi.endpoints.getChannels.initiate(payload);
 
