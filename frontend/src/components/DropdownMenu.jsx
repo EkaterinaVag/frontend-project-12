@@ -12,17 +12,11 @@ const DropdownMenu = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const currentChannel = useSelector(
-    (state) => state.currentChannel.currentChannel,
-  );
+  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
 
-  const handleRemoveChannel = () => {
-    dispatch(openRemoveChannelModal(channel));
-  };
+  const handleRemoveChannel = () => dispatch(openRemoveChannelModal(channel));
 
-  const handleRenameChannel = () => {
-    dispatch(openRenameChannelModal(channel));
-  };
+  const handleRenameChannel = () => dispatch(openRenameChannelModal(channel));
 
   return (
     <Dropdown as={ButtonGroup} className="me-2 w-100">
@@ -30,9 +24,10 @@ const DropdownMenu = ({ channel }) => {
       <Dropdown.Toggle
         split
         variant={currentChannel?.id === channel.id ? 'secondary' : ''}
-        title={<span className="visually-hidden">{t('dropdown')}</span>}
         id="channelDropdown"
-      />
+      >
+        <span className="visually-hidden">{t('dropdown')}</span>
+      </Dropdown.Toggle>
 
       <Dropdown.Menu>
         <Dropdown.Item onClick={handleRemoveChannel}>
