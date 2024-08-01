@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from 'react-bootstrap';
 const ModalInput = ({
   formik,
   inputRef,
+  t,
 }) => (
   <FormGroup>
     <FormControl
@@ -15,6 +16,7 @@ const ModalInput = ({
       data-testid="input-name"
       name="name"
     />
+    <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
     {formik.touched.name && formik.errors.name && (
       <FormControl.Feedback type="invalid">
         {formik.errors.name}
