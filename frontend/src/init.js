@@ -18,9 +18,9 @@ const init = async () => {
     resources,
   });
 
-  filter.loadDictionary('ru');
-  const badWordsEn = filter.getDictionary('en');
-  filter.add(badWordsEn);
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('fr'));
+  filter.add(filter.getDictionary('ru'));
 
   const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
