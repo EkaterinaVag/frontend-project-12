@@ -4,9 +4,7 @@ import { setCurrentChannel } from '../slices/currentChannelSlice';
 
 const ChannelItem = ({ channel }) => {
   const dispatch = useDispatch();
-  const currentChannel = useSelector(
-    (state) => state.currentChannel.currentChannel,
-  );
+  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
 
   return (
     <Button
@@ -14,7 +12,8 @@ const ChannelItem = ({ channel }) => {
         currentChannel && currentChannel.id === channel.id ? 'secondary' : ''
       }
       onClick={() => dispatch(setCurrentChannel(channel))}
-      className="w-100 rounded-0 text-start"
+      className="w-100 rounded-0 text-start text-truncate"
+      title={channel.name}
     >
       <span className="me-1">#</span>
       {channel.name}
