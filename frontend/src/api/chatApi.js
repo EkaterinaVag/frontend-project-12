@@ -1,4 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { io } from 'socket.io-client';
+
+const socket = io();
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -19,6 +22,26 @@ export const chatApi = createApi({
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => 'channels',
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        try {
+          await cacheDataLoaded;
+          const handleNewChannel = (payload) => {
+            chatApi.endpoints.getChannels.initiate(payload);
+            updateCachedData((draft) => {
+              draft.push(payload);
+            });
+          };
+
+          socket.on('newChannel', handleNewChannel);
+        } catch (err) {
+          console.error(err);
+        }
+        await cacheEntryRemoved;
+        socket.close();
+      },
       providesTags: ['Channel'],
     }),
     addChannel: builder.mutation({
@@ -35,6 +58,26 @@ export const chatApi = createApi({
         method: 'PATCH',
         body: { name },
       }),
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        try {
+          await cacheDataLoaded;
+          const handleRenameChannel = (payload) => {
+            chatApi.endpoints.renameChannel.initiate(payload);
+            updateCachedData((draft) => {
+              draft.push(payload);
+            });
+          };
+
+          socket.on('renameChannel', handleRenameChannel);
+        } catch (err) {
+          console.error(err);
+        }
+        await cacheEntryRemoved;
+        socket.close();
+      },
       invalidatesTags: ['Channel'],
     }),
     removeChannel: builder.mutation({
@@ -42,22 +85,27 @@ export const chatApi = createApi({
         url: `channels/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Channel', 'Message'],
-      extraReducers: (build) => {
-        build.addCase(
-          chatApi.endpoints.removeChannel.fulfilled,
-          (state, action) => {
-            const channelId = action.payload.id;
-            const messagesToDelete = state.entities.messages.filter(
-              (message) => message.channelId === channelId,
-            );
-
-            messagesToDelete.forEach((message) => {
-              chatApi.endpoints.removeMessages.initiate(message.id);
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        try {
+          await cacheDataLoaded;
+          const handleRemoveChannel = (payload) => {
+            chatApi.endpoints.removeChannel.initiate(payload);
+            updateCachedData((draft) => {
+              draft.push(payload);
             });
-          },
-        );
+          };
+
+          socket.on('removeChannel', handleRemoveChannel);
+        } catch (err) {
+          console.error(err);
+        }
+        await cacheEntryRemoved;
+        socket.close();
       },
+      invalidatesTags: ['Channel', 'Message'],
     }),
     removeMessages: builder.mutation({
       query: (id) => ({
@@ -68,6 +116,28 @@ export const chatApi = createApi({
     }),
     getMessages: builder.query({
       query: () => 'messages',
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        try {
+          await cacheDataLoaded;
+          const handleNewMessage = (payload) => {
+            if (chatApi.endpoints && chatApi.endpoints.getMessage) {
+              chatApi.endpoints.getMessage.initiate(payload);
+            }
+            updateCachedData((draft) => {
+              draft.push(payload);
+            });
+          };
+
+          socket.on('newMessage', handleNewMessage);
+        } catch (err) {
+          console.error(err);
+        }
+        await cacheEntryRemoved;
+        socket.close();
+      },
       providesTags: ['Message'],
     }),
     sendMessage: builder.mutation({
