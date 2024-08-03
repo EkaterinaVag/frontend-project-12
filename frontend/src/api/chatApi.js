@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { io } from 'socket.io-client';
-
-const socket = io();
+import handleSocketEvents from './handleSocketEvents';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -26,21 +24,12 @@ export const chatApi = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
-        try {
-          await cacheDataLoaded;
-          const handleNewChannel = (payload) => {
-            chatApi.endpoints.getChannels.initiate(payload);
-            updateCachedData((draft) => {
-              draft.push(payload);
-            });
-          };
-
-          socket.on('newChannel', handleNewChannel);
-        } catch (err) {
-          console.error(err);
-        }
-        await cacheEntryRemoved;
-        socket.close();
+        handleSocketEvents(
+          'newChannel',
+          updateCachedData,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        );
       },
       providesTags: ['Channel'],
     }),
@@ -62,21 +51,12 @@ export const chatApi = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
-        try {
-          await cacheDataLoaded;
-          const handleRenameChannel = (payload) => {
-            chatApi.endpoints.renameChannel.initiate(payload);
-            updateCachedData((draft) => {
-              draft.push(payload);
-            });
-          };
-
-          socket.on('renameChannel', handleRenameChannel);
-        } catch (err) {
-          console.error(err);
-        }
-        await cacheEntryRemoved;
-        socket.close();
+        handleSocketEvents(
+          'renameChannel',
+          updateCachedData,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        );
       },
       invalidatesTags: ['Channel'],
     }),
@@ -89,21 +69,12 @@ export const chatApi = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
-        try {
-          await cacheDataLoaded;
-          const handleRemoveChannel = (payload) => {
-            chatApi.endpoints.removeChannel.initiate(payload);
-            updateCachedData((draft) => {
-              draft.push(payload);
-            });
-          };
-
-          socket.on('removeChannel', handleRemoveChannel);
-        } catch (err) {
-          console.error(err);
-        }
-        await cacheEntryRemoved;
-        socket.close();
+        handleSocketEvents(
+          'removeChannel',
+          updateCachedData,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        );
       },
       invalidatesTags: ['Channel', 'Message'],
     }),
@@ -120,23 +91,12 @@ export const chatApi = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
-        try {
-          await cacheDataLoaded;
-          const handleNewMessage = (payload) => {
-            if (chatApi.endpoints && chatApi.endpoints.getMessage) {
-              chatApi.endpoints.getMessage.initiate(payload);
-            }
-            updateCachedData((draft) => {
-              draft.push(payload);
-            });
-          };
-
-          socket.on('newMessage', handleNewMessage);
-        } catch (err) {
-          console.error(err);
-        }
-        await cacheEntryRemoved;
-        socket.close();
+        handleSocketEvents(
+          'newMessage',
+          updateCachedData,
+          cacheDataLoaded,
+          cacheEntryRemoved,
+        );
       },
       providesTags: ['Message'],
     }),
