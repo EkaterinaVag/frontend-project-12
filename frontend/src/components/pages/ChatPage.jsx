@@ -2,17 +2,11 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import setupSocket from '../../api/socket';
 import MessageContainer from '../MessageContainer';
 import ChannelContainer from '../ChannelContainer';
 
 const ChatPage = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const cleanup = setupSocket();
-    return cleanup;
-  }, []);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   useEffect(() => {
