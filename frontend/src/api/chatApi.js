@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { io } from 'socket.io-client';
+
 import handleSocketEvents from './handleSocketEvents';
+
+const socket = io();
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -25,6 +29,7 @@ export const chatApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
         handleSocketEvents(
+          socket,
           'newChannel',
           updateCachedData,
           cacheDataLoaded,
@@ -52,6 +57,7 @@ export const chatApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
         handleSocketEvents(
+          socket,
           'renameChannel',
           updateCachedData,
           cacheDataLoaded,
@@ -70,6 +76,7 @@ export const chatApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
         handleSocketEvents(
+          socket,
           'removeChannel',
           updateCachedData,
           cacheDataLoaded,
@@ -92,6 +99,7 @@ export const chatApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
         handleSocketEvents(
+          socket,
           'newMessage',
           updateCachedData,
           cacheDataLoaded,
