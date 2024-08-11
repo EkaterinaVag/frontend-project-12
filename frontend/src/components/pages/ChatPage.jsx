@@ -1,19 +1,9 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
 import MessageContainer from '../MessageContainer';
 import ChannelContainer from '../ChannelContainer';
+import useAuth from '../../hooks/useAuth';
 
 const ChatPage = () => {
-  const navigate = useNavigate();
-
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
+  useAuth();
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
