@@ -8,6 +8,7 @@ const useAuth = () => {
 
   useEffect(() => {
     if (isAuthenticated) navigate('/');
+    if (!isAuthenticated) navigate('/login');
   }, [isAuthenticated, navigate]);
 };
 
