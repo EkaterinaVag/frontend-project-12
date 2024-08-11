@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
-import signupFormValidate from '../../signupFormValidate';
+import signupFormValidate from '../../validate/signupFormValidate';
 import SignupFormInput from './SignupFormInputs';
 import useSignup from '../../hooks/useSignup';
 

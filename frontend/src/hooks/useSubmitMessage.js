@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 const useSubmitMessage = (addMessage, currentChannel, username, t) => async (e) => {
   e.preventDefault();
+  if (!e.target.body.value) return;
   const filtredMessage = filter.clean(e.target.body.value);
   const newMessage = {
     body: filtredMessage,

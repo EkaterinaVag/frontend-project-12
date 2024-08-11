@@ -5,8 +5,8 @@ import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 
-import channelNameValidate from '../../channelNameValidate';
-import { renameCurrentChannel } from '../../slices/currentChannelSlice';
+import channelNameValidate from '../../validate/channelNameValidate';
+import { renameCurrentChannel } from '../../store/slices/currentChannelSlice';
 import ModalComponent from './ModalComponent';
 import {
   useGetChannelsQuery,

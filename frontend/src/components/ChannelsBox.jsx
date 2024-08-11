@@ -4,16 +4,14 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 import { useGetChannelsQuery } from '../api/chatApi';
-import { setCurrentChannel } from '../slices/currentChannelSlice';
+import { setCurrentChannel } from '../store/slices/currentChannelSlice';
 import ChannelsList from './ChannelsList';
 
 const ChannelsBox = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const currentChannel = useSelector(
-    (state) => state.currentChannel.currentChannel,
-  );
+  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
 
   const { data: channels, isLoading, error } = useGetChannelsQuery();
 

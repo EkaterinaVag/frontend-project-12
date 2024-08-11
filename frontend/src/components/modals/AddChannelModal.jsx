@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 
-import channelNameValidate from '../../channelNameValidate';
+import channelNameValidate from '../../validate/channelNameValidate';
 import { useGetChannelsQuery, useAddChannelMutation } from '../../api/chatApi';
-import { setCurrentChannel } from '../../slices/currentChannelSlice';
+import { setCurrentChannel } from '../../store/slices/currentChannelSlice';
 import ModalComponent from './ModalComponent';
 
 const AddChannelModal = ({ onHide }) => {

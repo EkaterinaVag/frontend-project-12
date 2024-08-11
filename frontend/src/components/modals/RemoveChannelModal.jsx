@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import { setCurrentChannel } from '../../slices/currentChannelSlice';
+import { setCurrentChannel } from '../../store/slices/currentChannelSlice';
 import {
   useGetChannelsQuery,
   useRemoveChannelMutation,

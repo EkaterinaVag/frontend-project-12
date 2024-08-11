@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import { openAddChannelModal } from '../slices/modalSlice';
+import { openAddChannelModal } from '../store/slices/modalSlice';
 import ChannelsBox from './ChannelsBox';
 
 const ChannelContainer = () => {

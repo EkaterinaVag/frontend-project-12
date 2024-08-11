@@ -6,7 +6,7 @@ import {
   closeRenameChannelModal,
   closeRemoveChannelModal,
   closeAddChannelModal,
-} from '../../slices/modalSlice';
+} from '../../store/slices/modalSlice';
 
 const ModalsContainer = ({ channel }) => {
   const dispatch = useDispatch();

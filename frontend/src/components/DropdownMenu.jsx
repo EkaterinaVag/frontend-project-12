@@ -6,7 +6,7 @@ import ChannelItem from './ChannelItem';
 import {
   openRenameChannelModal,
   openRemoveChannelModal,
-} from '../slices/modalSlice';
+} from '../store/slices/modalSlice';
 
 const DropdownMenu = ({ channel }) => {
   const { t } = useTranslation();

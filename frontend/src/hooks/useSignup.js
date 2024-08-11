@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
-import { login } from '../slices/authSlice';
+import { login } from '../store/slices/authSlice';
 import { signupUrl } from '../routes';
 
 const useSignup = () => {

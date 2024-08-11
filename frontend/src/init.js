@@ -5,7 +5,7 @@ import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import filter from 'leo-profanity';
 
 import resources from './locales/index';
-import store from './store';
+import store from './store/store';
 import App from './components/App';
 
 const init = async () => {

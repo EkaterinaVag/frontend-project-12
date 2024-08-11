@@ -3,7 +3,7 @@ import { Navbar, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { logout } from '../slices/authSlice';
+import { logout } from '../store/slices/authSlice';
 
 const AuthNavbar = () => {
   const { t } = useTranslation();
