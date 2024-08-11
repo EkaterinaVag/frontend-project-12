@@ -1,7 +1,18 @@
-const apiPath = '/api/v1';
+const appRoutes = {
+  main: '/',
+  login: '/login',
+  signup: '/signup',
+  notFound: '*',
+};
 
-const signupUrl = () => [apiPath, 'signup'].join('/');
+const apiRoutes = {
+  apiPath: '/api/v1',
+  loginPath: 'login',
+  signupPath: 'signup',
+};
 
-const loginUrl = () => [apiPath, 'login'].join('/');
+const signupUrl = () => [apiRoutes.apiPath, apiRoutes.signupPath].join('/');
 
-export { signupUrl, loginUrl };
+const loginUrl = () => [apiRoutes.apiPath, apiRoutes.loginPath].join('/');
+
+export { signupUrl, loginUrl, appRoutes };
