@@ -10,6 +10,7 @@ import ChatPage from './pages/ChatPage';
 import SignupPage from './pages/SignupPage';
 import AuthNavbar from './AuthNavbar';
 import ModalsContainer from './modals/ModalsContainer';
+import { appRoutes } from '../routes';
 
 const App = () => (
   <div className="d-flex flex-column h-100">
@@ -17,10 +18,10 @@ const App = () => (
       <AuthNavbar />
       <ModalsContainer />
       <Routes>
-        <Route path="/" element={<ChatPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path={appRoutes.main} element={<ChatPage />} />
+        <Route path={appRoutes.login} element={<LoginPage />} />
+        <Route path={appRoutes.signup} element={<SignupPage />} />
+        <Route path={appRoutes.notFound} element={<NotFoundPage />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>
