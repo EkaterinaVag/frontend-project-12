@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
+import { appRoutes } from '../../routes';
+
 const NotFoundPage = () => {
   const { t } = useTranslation();
 
@@ -9,7 +11,7 @@ const NotFoundPage = () => {
       <p className="text-muted">
         {t('notFoundPage.link')}
         {' '}
-        <a href="/">{t('notFoundPage.main')}</a>
+        <a href={appRoutes.main}>{t('notFoundPage.main')}</a>
       </p>
     </div>
   );
