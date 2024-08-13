@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { logout } from '../store/slices/authSlice';
+import { appRoutes } from '../routes';
 
 const AuthNavbar = () => {
   const { t } = useTranslation();
@@ -13,13 +14,13 @@ const AuthNavbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate(appRoutes.login);
   };
 
   return (
     <Navbar expand="lg" className="shadow-sm navbar-light bg-white">
       <Container>
-        <Navbar.Brand href="/">{t('main')}</Navbar.Brand>
+        <Navbar.Brand href={appRoutes.main}>{t('main')}</Navbar.Brand>
         {isAuthenticated && (
           <Button variant="primary" onClick={handleLogout}>
             {t('buttons.logout')}
