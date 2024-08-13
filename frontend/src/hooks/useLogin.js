@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { login } from '../store/slices/authSlice';
-import { loginUrl } from '../routes';
+import { appRoutes, loginUrl } from '../routes';
 
 const useLogin = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const useLogin = () => {
       const res = await axios.post(loginUrl(), values);
       const { token, username } = res.data;
       dispatch(login({ token, username }));
-      navigate('/');
+      navigate(appRoutes.main);
     } catch {
       setAuthFailed(true);
     }
