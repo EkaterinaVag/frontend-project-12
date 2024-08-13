@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import { login } from '../store/slices/authSlice';
-import { signupUrl } from '../routes';
+import { appRoutes, signupUrl } from '../routes';
 
 const useSignup = () => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ const useSignup = () => {
       const res = await axios.post(signupUrl(), newUser);
       const { token } = res.data;
       dispatch(login({ token, username }));
-      navigate('/');
+      navigate(appRoutes.main);
     } catch (err) {
       if (err.isAxiosError && err.response.status === 409) {
         setErrorMessage(t('signupPage.error'));
