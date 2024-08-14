@@ -8,17 +8,12 @@ import {
   closeAddChannelModal,
 } from '../../store/slices/modalSlice';
 
-const ModalsContainer = ({ channel }) => {
+const ModalsContainer = () => {
   const dispatch = useDispatch();
-  const showRemoveChannelModal = useSelector(
-    (state) => state.modal.showRemoveChannelModal,
-  );
-  const showRenameChannelModal = useSelector(
-    (state) => state.modal.showRenameChannelModal,
-  );
-  const showAddChannelModal = useSelector(
-    (state) => state.modal.showAddChannelModal,
-  );
+
+  const showRemoveChannelModal = useSelector((state) => state.modal.showRemoveChannelModal);
+  const showRenameChannelModal = useSelector((state) => state.modal.showRenameChannelModal);
+  const showAddChannelModal = useSelector((state) => state.modal.showAddChannelModal);
 
   return (
     <>
@@ -28,13 +23,11 @@ const ModalsContainer = ({ channel }) => {
       {showRemoveChannelModal && (
         <RemoveChannelModal
           onHide={() => dispatch(closeRemoveChannelModal())}
-          channel={channel}
         />
       )}
       {showRenameChannelModal && (
         <RenameChannelModal
           onHide={() => dispatch(closeRenameChannelModal())}
-          channel={channel}
         />
       )}
     </>
