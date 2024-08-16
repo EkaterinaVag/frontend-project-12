@@ -21,7 +21,11 @@ const ModalForm = ({
       <Button variant="secondary" onClick={onHide}>
         {t('buttons.cancel')}
       </Button>
-      <Button variant="primary" type="submit" disabled={isLoading}>
+      <Button
+        variant={submitLabelKey === 'buttons.remove' ? 'danger' : 'primary'}
+        type="submit"
+        disabled={isLoading}
+      >
         {t(submitLabelKey)}
       </Button>
     </div>
