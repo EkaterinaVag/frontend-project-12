@@ -11,12 +11,14 @@ const ModalComponent = ({
   t,
   formik,
   inputRef,
+  children,
 }) => (
   <Modal show centered>
     <Modal.Header closeButton onHide={onHide}>
       <Modal.Title>{t(titleKey)}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
+      {children}
       <ModalForm
         onHide={onHide}
         onSubmit={onSubmit}
