@@ -5,12 +5,13 @@ import { useTranslation } from 'react-i18next';
 
 import { logout } from '../store/slices/authSlice';
 import { appRoutes } from '../routes';
+import { getIsAuthenticated } from '../store/slices/authSelectors';
 
 const AuthNavbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   const handleLogout = () => {
     dispatch(logout());

@@ -1,20 +1,18 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { setCurrentChannel } from '../../store/slices/currentChannelSlice';
-import {
-  useGetChannelsQuery,
-  useRemoveChannelMutation,
-} from '../../api/chatApi';
+import { getSelectedChannel } from '../../store/slices/modalSelectors';
+import { useGetChannelsQuery, useRemoveChannelMutation } from '../../api/chatApi';
+import ModalComponent from './ModalComponent';
 
 const RemoveChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const selectedChannel = useSelector((state) => state.modal.selectedChannel);
+  const selectedChannel = useSelector(getSelectedChannel);
   const [removeChannel, { isLoading }] = useRemoveChannelMutation();
 
   const { data: channels } = useGetChannelsQuery();
@@ -33,27 +31,16 @@ const RemoveChannelModal = ({ onHide }) => {
   };
 
   return (
-    <Modal show centered>
-      <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t('modals.delete')}</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>
-        <p>{t('modals.confirm')}</p>
-        <form onSubmit={handleSubmit}>
-          <div
-            style={{ display: 'flex', justifyContent: 'flex-end', gap: '5px' }}
-          >
-            <Button variant="secondary" onClick={onHide}>
-              {t('buttons.cancel')}
-            </Button>
-            <Button variant="danger" type="submit" disabled={isLoading}>
-              {t('buttons.remove')}
-            </Button>
-          </div>
-        </form>
-      </Modal.Body>
-    </Modal>
+    <ModalComponent
+      onHide={onHide}
+      onSubmit={handleSubmit}
+      titleKey="modals.delete"
+      submitLabelKey="buttons.remove"
+      isLoading={isLoading}
+      t={t}
+    >
+      <p>{t('modals.confirm')}</p>
+    </ModalComponent>
   );
 };
 

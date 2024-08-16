@@ -7,17 +7,16 @@ import filter from 'leo-profanity';
 
 import channelNameValidate from '../../validate/channelNameValidate';
 import { renameCurrentChannel } from '../../store/slices/currentChannelSlice';
+import { getSelectedChannel } from '../../store/slices/modalSelectors';
 import ModalComponent from './ModalComponent';
-import {
-  useGetChannelsQuery,
-  useRenameChannelMutation,
-} from '../../api/chatApi';
+import { useGetChannelsQuery, useRenameChannelMutation } from '../../api/chatApi';
 
 const RenameChannelModal = ({ onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const selectedChannel = useSelector((state) => state.modal.selectedChannel);
+  const selectedChannel = useSelector(getSelectedChannel);
+  console.log(selectedChannel);
   const [renameChannel, { isLoading }] = useRenameChannelMutation();
 
   const inputRef = useRef(null);

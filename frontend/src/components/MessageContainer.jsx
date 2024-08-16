@@ -5,15 +5,17 @@ import { useGetMessagesQuery, useSendMessageMutation } from '../api/chatApi';
 import useSubmitMessage from '../hooks/useSubmitMessage';
 import MessagesBox from './MessagesBox';
 import MessageForm from './MessageForm';
+import getCurrentChannel from '../store/slices/currentChannelSelectors';
+import { getUsername } from '../store/slices/authSelectors';
 
 const MessageContainer = () => {
   const { t } = useTranslation();
-  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
-  const username = useSelector((state) => state.auth.username);
-  const [addMessage, { isLoading: sendMessageLoading }] = useSendMessageMutation();
+  const currentChannel = useSelector(getCurrentChannel);
+  const username = useSelector(getUsername);
+  const [sendMessage, { isLoading: sendMessageLoading }] = useSendMessageMutation();
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery();
   const channelMessages = messages?.filter((message) => message.channelId === currentChannel?.id);
-  const handleSubmit = useSubmitMessage(addMessage, currentChannel, username, t);
+  const handleSubmit = useSubmitMessage(sendMessage, currentChannel, username, t);
 
   return (
     <div className="col p-0 h-100">

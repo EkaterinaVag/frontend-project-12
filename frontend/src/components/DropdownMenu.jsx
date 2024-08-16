@@ -3,16 +3,14 @@ import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import ChannelItem from './ChannelItem';
-import {
-  openRenameChannelModal,
-  openRemoveChannelModal,
-} from '../store/slices/modalSlice';
+import { openRenameChannelModal, openRemoveChannelModal } from '../store/slices/modalSlice';
+import getCurrentChannel from '../store/slices/currentChannelSelectors';
 
 const DropdownMenu = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
+  const currentChannel = useSelector(getCurrentChannel);
 
   const handleRemoveChannel = () => dispatch(openRemoveChannelModal(channel));
 

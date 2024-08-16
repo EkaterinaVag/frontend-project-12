@@ -1,10 +1,12 @@
 import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { setCurrentChannel } from '../store/slices/currentChannelSlice';
+import getCurrentChannel from '../store/slices/currentChannelSelectors';
 
 const ChannelItem = ({ channel }) => {
   const dispatch = useDispatch();
-  const currentChannel = useSelector((state) => state.currentChannel.currentChannel);
+  const currentChannel = useSelector(getCurrentChannel);
 
   return (
     <Button

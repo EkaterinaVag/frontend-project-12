@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { appRoutes } from '../routes';
+import { getIsAuthenticated } from '../store/slices/authSelectors';
 
 const useAuth = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) navigate(appRoutes.main);
